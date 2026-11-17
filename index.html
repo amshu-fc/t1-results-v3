@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IntelliFran T1 Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" />
+<style>
+/* Self-contained prototype. Tokens and component designs follow the approved
+   questionnaire design and the brand-comparison / book-a-call / request-more-info
+   prototypes, re-implemented here so this one file can be shared on its own. */
+:root{
+  --primary:#0B2347; --secondary:#2F6FFF; --accent:#14B8A6; --bg:#F7F9FC; --surface:#FFFFFF;
+  --heading:#0B2347; --text:#24344B; --soft:#6B7686; --border:#E4E9F0; --lock:#8A94A6;
+  --r-sm:12px; --r-md:18px; --r-lg:28px; --shadow:0 24px 64px rgba(11,35,71,.11);
+  --ease:cubic-bezier(.16,1,.3,1);
+  --ui:'Inter',system-ui,sans-serif; --serif:'Playfair Display',Georgia,serif;
+}
+*,::before,::after{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#DCE3EC;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overflow:hidden}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+h1,h2,h3,h4,p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--secondary);outline-offset:3px}
+
+/* ---------- Prototype chrome (not part of the product) ---------- */
+.proto-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 14px;background:#111827;color:#E5E7EB;font-size:12.5px;z-index:50}
+.proto-bar b{color:#fff;margin-right:6px}
+.seg{display:inline-flex;background:#1F2937;border-radius:8px;padding:2px}
+.seg button{padding:5px 10px;border-radius:6px;color:#9CA3AF;font-weight:600}
+.seg button[aria-pressed=true]{background:#374151;color:#fff}
+.proto-bar .spacer{flex:1}
+.proto-bar .chip-btn{padding:5px 10px;border-radius:6px;background:#1F2937;color:#D1D5DB;font-weight:600}
+.proto-bar .seg-label{color:#9CA3AF;margin-left:8px}
+.state-pill{padding:3px 8px;border-radius:999px;font-weight:700;font-size:11px;background:#374151}
+.state-pill.on{background:var(--accent);color:#04211d}
+
+.stage{flex:1;min-height:0;display:flex;justify-content:center;align-items:stretch}
+.stage.mobile{padding:18px 0}
+.device{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg);container-type:inline-size;container-name:app}
+.stage.mobile .device{width:390px;max-height:844px;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.25);border:8px solid #111827}
+.scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden}
+
+
+/* ---------- Site header ---------- */
+.site-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.logo{font-weight:800;font-size:19px;letter-spacing:-.01em}
+.logo .a{color:var(--primary)} .logo .b{color:var(--secondary)}
+
+/* ---------- Layout ---------- */
+.page{max-width:1180px;margin:0 auto;padding:28px 24px 120px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+@container app (max-width:900px){ .page{grid-template-columns:1fr;padding:20px 16px 120px} .rail{position:static} }
+
+/* ---------- Hero ---------- */
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font:800 clamp(26px,4.2cqi,40px)/1.1 var(--ui);margin:8px 0 10px;color:var(--heading);letter-spacing:-.02em}
+.hero h1 .n{color:var(--secondary)}
+.hero p.lede{font-family:var(--serif);font-size:17px;line-height:1.55;max-width:680px}
+.vetted{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 12px;border-radius:999px;background:#E8F7F5;color:#0E6B61;font-size:13px;font-weight:600}
+.vetted svg{width:16px;height:16px;flex:none}
+.recap{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.recap span{font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--soft)}
+
+/* ---------- Sector block ---------- */
+.sector{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;margin-bottom:22px;box-shadow:0 6px 20px rgba(11,35,71,.04)}
+.sector-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sector-title{display:flex;align-items:center;gap:10px}
+.rank{width:30px;height:30px;border-radius:9px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex-shrink:0}
+.sector h2{font-size:21px;font-weight:800;color:var(--heading)}
+.band{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;color:#0c8f7f;background:color-mix(in srgb,var(--accent) 16%,#fff)}
+.band.good{color:#1d55c9;background:color-mix(in srgb,var(--secondary) 14%,#fff)}
+.strip{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 0 16px;font-size:13px;color:var(--soft)}
+.strip span{display:inline-flex;align-items:center;gap:6px}
+.strip span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.strip strong{color:var(--text)}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+@container app (max-width:520px){ .brand-grid{grid-template-columns:1fr} }
+
+/* ---------- Brand tile ---------- */
+.tile{display:flex;flex-direction:column;text-align:left;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;background:var(--surface);transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.tile-open{display:flex;flex-direction:column;text-align:left;flex:1}
+.c-avail{background:var(--accent);color:#fff}
+.c-avail:hover{background:#0c8f7f}
+.c-done{background:#e2f6f1!important;color:#0c8f7f!important;cursor:default}
+
+
+/* Ask sheet */
+.ask-box{width:100%;min-height:92px;resize:vertical;font:400 15px/1.5 var(--ui);padding:12px;border-radius:12px;border:1.5px solid var(--border);color:var(--text)}
+.ask-box:focus{outline:none;border-color:var(--secondary)}
+.suggest{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.suggest button{font:600 12.5px var(--ui);color:var(--secondary);background:#fff;border:1.5px solid color-mix(in srgb,var(--secondary) 35%,#fff);border-radius:99px;padding:6px 11px}
+.suggest button:hover{background:var(--secondary);color:#fff}
+.ask-divider{font:700 11px var(--ui);letter-spacing:.07em;text-transform:uppercase;color:var(--soft);margin:4px 0 8px}
+.photo{position:relative;aspect-ratio:16/9;display:flex;align-items:flex-end;padding:10px;color:#fff;font-size:11px;font-weight:600;overflow:hidden}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo.has-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.28))}
+.photo .logo-chip{position:absolute;top:10px;left:10px;z-index:1;background:#fff;color:var(--primary);font-weight:800;font-size:12px;padding:5px 9px;border-radius:8px;letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.photo .wordmark{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:0 18px;font:700 clamp(20px,6cqi,30px)/1.1 var(--serif);color:rgba(255,255,255,.95);text-shadow:0 2px 14px rgba(0,0,0,.25)}
+.photo .wordmark::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(255,255,255,.22),transparent 45%),repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px)}
+.d-hero .photo .wordmark{font-size:36px}
+.tile-body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.tile h3{font-size:16.5px;font-weight:800;color:var(--heading)}
+.subcat{font-size:11.5px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:.05em}
+.hook{font-family:var(--serif);font-size:14.5px;line-height:1.45;color:var(--text)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;background:#F1F5F9;color:#3B4A60}
+.tile-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;border-top:1px dashed var(--border);font-size:12.5px;gap:6px 10px}
+.locked-line{display:flex;align-items:center;gap:6px;color:var(--lock);font-weight:600;white-space:nowrap;min-width:0}
+.locked-line .blur{filter:blur(4px);user-select:none}
+.view{font-weight:700;color:var(--secondary);white-space:nowrap;margin-left:auto}
+
+.empty-note{font-family:var(--serif);font-size:14.5px;color:var(--soft);margin-bottom:12px}
+
+/* "+N more" banner: the main ask on the page */
+.more-banner{width:100%;margin-top:16px;display:flex;align-items:center;gap:16px 18px;flex-wrap:wrap;text-align:left;padding:18px 20px;border-radius:var(--r-md);background:linear-gradient(120deg,var(--primary),#163c78);color:#fff;box-shadow:0 14px 34px rgba(11,35,71,.18);position:relative;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.more-banner::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:var(--secondary);opacity:.35;filter:blur(60px);right:-40px;top:-120px;pointer-events:none}
+.more-banner > *{position:relative}
+button.more-banner:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(11,35,71,.24)}
+.mb-num{font:800 38px/1 var(--ui);color:#7FE3D6;letter-spacing:-.02em;flex:none}
+.mb-copy{flex:1;min-width:200px}
+.mb-copy strong{display:block;font:800 18px/1.25 var(--ui)}
+.mb-copy span{display:block;margin-top:3px;font:400 14.5px/1.45 var(--serif);color:#C9D5EA}
+.mb-btn{flex:none;padding:13px 18px;font-size:14.5px;box-shadow:0 6px 18px rgba(47,111,255,.45)}
+@container app (max-width:520px){ .mb-btn{width:100%} }
+.more-banner.done{background:#E8F7F5;color:var(--heading);box-shadow:none;border:1px solid #cdeee3}
+.more-banner.done::after{display:none}
+.more-banner.done .mb-copy span{color:var(--soft)}
+.mb-ico{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;flex:none}
+.mb-ico svg{width:16px;height:16px}
+
+/* ---------- Brand-card hook box: three concepts ---------- */
+.hook-wrap{padding:16px 22px 18px;border-top:1px solid var(--border)}
+.hk-eyebrow{font:800 11px var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--secondary)}
+.hk-title{font:700 21px/1.2 var(--serif);color:var(--heading);margin:4px 0 12px}
+.hk-foot{margin-top:9px;text-align:center;font-size:12px;color:var(--soft)}
+.hk-unlock{width:100%;margin-top:12px;padding:14px;font-size:15px}
+.hk-ans{font:700 14px var(--ui);color:var(--primary)}
+.hk-link{display:inline-flex;align-items:center;gap:6px;font:700 13.5px var(--ui);color:var(--secondary);text-decoration:none}
+.hk-link svg{width:14px;height:14px}
+.hk-link:hover{text-decoration:underline;text-underline-offset:3px}
+.hk-note{display:block;font:400 12px/1.45 var(--ui);color:var(--soft);margin-top:3px}
+.hk-sent{display:inline-flex;align-items:center;gap:6px;font:700 13px var(--ui);color:#0c8f7f}
+.hk-sent svg{width:14px;height:14px}
+
+/* A: highlighted checklist */
+.hk-a{border:2px solid color-mix(in srgb,var(--secondary) 55%,#fff);background:linear-gradient(180deg,#F2F6FF,#fff);border-radius:var(--r-md);padding:18px;box-shadow:0 10px 30px rgba(47,111,255,.12)}
+.hk-a .rows{display:grid;gap:8px}
+.hk-row{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 12px;transition:border-color .2s,transform .2s}
+button.hk-row:hover{border-color:var(--secondary);transform:translateX(2px)}
+.hk-ico{width:36px;height:36px;border-radius:10px;background:color-mix(in srgb,var(--secondary) 12%,#fff);color:var(--secondary);display:grid;place-items:center}
+.hk-ico svg{width:18px;height:18px}
+.hk-q{font:700 14.5px/1.3 var(--ui);color:var(--heading)}
+.hk-sub{display:block;font:400 12.5px/1.4 var(--ui);color:var(--soft);margin-top:2px}
+.hk-lock{width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center}
+.hk-lock svg{width:13px;height:13px}
+.hk-a.open{border-color:#cdeee3;background:linear-gradient(180deg,#F0FBF8,#fff);box-shadow:none}
+.hk-a.open .hk-eyebrow{color:#0c8f7f}
+.hk-a.open .hk-ico{background:#E2F6F1;color:#0c8f7f}
+.hk-a.open .hk-row{grid-template-columns:36px 1fr}
+
+/* B: teaser tiles over blurred previews */
+.hk-b .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@container app (max-width:420px){ .hk-b .grid{grid-template-columns:1fr} }
+.hk-tile{position:relative;display:flex;flex-direction:column;gap:8px;text-align:left;width:100%;min-height:132px;padding:13px;border-radius:14px;background:#fff;border:1.5px solid var(--border);box-shadow:0 4px 14px rgba(11,35,71,.05);overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s}
+button.hk-tile:hover{border-color:var(--secondary);transform:translateY(-2px);box-shadow:0 10px 24px rgba(47,111,255,.14)}
+.hk-tile .hk-q{font-size:13.5px}
+.hk-prev{margin-top:auto;font:800 20px/1.2 var(--ui);color:var(--primary)}
+.hk-tile.locked .hk-prev{filter:blur(6px);user-select:none}
+.hk-pill{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:5px;font:800 11.5px var(--ui);color:#fff;background:var(--secondary);border-radius:999px;padding:5px 10px;box-shadow:0 4px 12px rgba(47,111,255,.35)}
+.hk-pill svg{width:12px;height:12px}
+.hk-b.open .hk-tile{border-color:#cdeee3;background:#F7FDFB}
+.hk-b.open .hk-prev{font-size:15px}
+
+/* C: dark callout band */
+.hk-c{position:relative;overflow:hidden;background:var(--primary);color:#fff;border-radius:var(--r-md);padding:22px;box-shadow:var(--shadow)}
+.hk-c::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:var(--secondary);opacity:.3;filter:blur(70px);right:-80px;top:-130px;pointer-events:none}
+.hk-c > *{position:relative}
+.hk-c .hk-eyebrow{color:#7FE3D6}
+.hk-c .hk-title{color:#fff;font-size:23px}
+.hk-c ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.hk-c li button,.hk-c li > div{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;color:#E3EAF7;font:600 14.5px/1.4 var(--ui);padding:6px 8px;margin:0 -8px;border-radius:9px}
+.hk-c li button:hover{background:rgba(255,255,255,.08)}
+.hk-c li svg{width:17px;height:17px;color:var(--accent);flex:none;margin-top:1px}
+.hk-c .hk-unlock{background:var(--accent);color:#04211d;box-shadow:0 8px 22px rgba(20,184,166,.35)}
+.hk-c .hk-unlock:hover{background:#2fd3c0}
+.hk-c .hk-foot{color:#AFC0DC}
+.hk-c.open{background:#0E6B61}
+.hk-c.open::after{display:none}
+.hk-c .hk-ans{color:#fff}
+.hk-c .hk-note{color:#BFE3DD}
+.hk-c .hk-link{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.hk-c .hk-sent{color:#BFF5EC}
+.hk-c .hk-c-row{display:block}
+.hk-c .hk-c-row b{display:block;font:700 12px var(--ui);letter-spacing:.05em;text-transform:uppercase;color:#9FDCD2;margin-bottom:2px}
+
+/* About */
+.about{font-family:var(--serif);font-size:15.5px;line-height:1.6;color:var(--text)}
+
+
+/* Compare entry (brand-comparison design) */
+.cmp-entry{margin:0 0 22px;display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;padding:16px 20px;border:1.5px dashed color-mix(in srgb,var(--secondary) 45%,#fff);border-radius:var(--r-md);background:color-mix(in srgb,var(--secondary) 5%,#fff)}
+.cmp-entry-title{font:700 15px var(--ui);color:var(--heading)}
+.cmp-entry-sub{font:400 13px var(--ui);color:var(--soft);margin-top:2px}
+.cmp-new{display:inline-block;font:800 10px var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--secondary);background:#fff;border:1px solid color-mix(in srgb,var(--secondary) 30%,#fff);border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:14px;padding:11px 16px;border-radius:12px;transition:filter .2s,transform .2s,background .2s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--secondary);color:#fff}
+.btn-primary:hover{background:#1f5ce0}
+.btn-dark{background:var(--primary);color:#fff}
+.btn-ghost{background:#fff;color:var(--secondary);border:1.5px solid #CADAFF}
+.btn-pill{border-radius:999px;padding:11px 20px}
+.btn-sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.btn svg{width:15px;height:15px;flex:none}
+
+/* ---------- Contact rail ---------- */
+.rail{position:sticky;top:84px}
+.contact{background:var(--primary);color:#fff;border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow)}
+.contact h3{color:#fff;font-size:20px;font-weight:800;line-height:1.2}
+.contact p.sub{font-family:var(--serif);font-size:14.5px;color:#C9D5EA;margin:8px 0 14px;line-height:1.5}
+.unlock-list{list-style:none;padding:0;margin:0 0 14px;display:grid;gap:7px;font-size:13px;color:#E3EAF7}
+.unlock-list li{display:flex;gap:8px;align-items:flex-start}
+.unlock-list svg{width:15px;height:15px;color:var(--accent);flex-shrink:0;margin-top:2px}
+.form{display:grid;gap:8px}
+.form .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.form input[type=text],.form input[type=email],.form input[type=tel]{width:100%;font:500 14px var(--ui);padding:11px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text)}
+.contact .form input{border-color:transparent}
+.form label.consent{display:flex;gap:8px;font-size:11.5px;line-height:1.4;opacity:.85;align-items:flex-start}
+.form .submit{margin-top:4px;width:100%;padding:13px}
+.secondary-link{display:block;margin-top:12px;text-align:center;font-size:13px;font-weight:600;color:#BFD2FF;text-decoration:underline;text-underline-offset:3px;width:100%}
+.contact.done{background:#0E6B61}
+.contact .booked{margin:12px 0;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.12);font-size:13px}
+.contact .booked b{display:block;font-size:14px}
+
+/* ---------- Mobile sticky CTA ---------- */
+.mobile-cta{display:none;position:absolute;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--border);z-index:30;gap:8px}
+.mobile-cta .btn{flex:1}
+@container app (max-width:900px){ .mobile-cta{display:flex} }
+
+/* ---------- Brand card drawer ---------- */
+.scrim{position:absolute;inset:0;background:rgba(11,35,71,.35);opacity:0;pointer-events:none;transition:opacity .3s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--surface);z-index:41;transform:translateX(100%);transition:transform .45s var(--ease);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(11,35,71,.18)}
+.drawer.on{transform:none}
+@container app (max-width:900px){ .drawer{width:100%;transform:translateY(100%)} .drawer.on{transform:none} }
+.drawer-scroll{flex:1;overflow-y:auto}
+.drawer-close{position:absolute;top:12px;right:12px;z-index:3;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.drawer-close svg{width:18px;height:18px}
+.d-hero{aspect-ratio:16/8}
+.d-hero .photo{aspect-ratio:auto;height:100%}
+.d-head{padding:18px 22px 6px}
+.d-head h2{font:700 28px/1.15 var(--serif);color:var(--heading);margin:4px 0 8px}
+.d-head .hook{font-size:17px}
+.d-sec{padding:16px 22px;border-top:1px solid var(--border)}
+.d-sec h4{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.d-sec h4 .tag{font-size:10px;padding:2px 6px;border-radius:5px;background:#EEF2F7;color:#4B5B73;letter-spacing:.04em}
+.d-sec ul{margin:0;padding-left:18px;display:grid;gap:6px;font-family:var(--serif);font-size:15px;line-height:1.45}
+.why{background:#F4F7FF;border-radius:var(--r-sm);padding:12px 14px;font-family:var(--serif);font-size:15px;line-height:1.5;color:var(--primary)}
+.glance{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.glance div{background:#F7F9FC;border-radius:12px;padding:10px 12px}
+.glance b{display:block;font-size:18px;font-weight:800;color:var(--primary)}
+.glance span{font-size:12px;color:var(--soft)}
+.gated{position:relative;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)}
+.gated .content{padding:14px}
+.gated.locked .content{filter:blur(7px);user-select:none;pointer-events:none}
+.gated .veil{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.85))}
+.gated.locked .veil{display:flex}
+.veil p{font-weight:700;color:var(--primary);font-size:14.5px;max-width:300px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 16px;font-size:14px;margin:0}
+.kv dt{color:var(--soft)} .kv dd{margin:0;font-weight:700;color:var(--primary);text-align:right}
+.fineprint{font-size:11px;color:var(--soft);margin-top:10px;line-height:1.4}
+.drawer-actions{border-top:1px solid var(--border);padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--surface);box-shadow:0 -10px 24px rgba(11,35,71,.06)}
+.drawer-actions .btn{font-size:13.5px;padding:12px}
+.drawer-actions .sub-actions{grid-column:1/-1;display:flex;justify-content:center;gap:18px;font:700 12.5px var(--ui);color:var(--secondary)}
+.drawer-actions .sub-actions button{display:inline-flex;align-items:center;gap:5px}
+
+/* Availability / request rows (request-more-info design) */
+.avail-row{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;background:#effaf7;border:1px solid #cdeee3;border-radius:12px;padding:13px 16px}
+.avail-row + .avail-row{margin-top:8px}
+.avail-info,.avail-confirmed{display:flex;align-items:flex-start;gap:11px}
+.avail-icon{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:#fff;color:var(--accent);display:flex;align-items:center;justify-content:center}
+.avail-icon svg{width:14px;height:14px}
+.avail-confirmed .avail-icon{background:var(--accent);color:#fff}
+.avail-title{font:700 13px var(--ui);color:var(--heading);margin-bottom:2px}
+.avail-sub{font:400 12px/1.5 var(--ui);color:var(--soft)}
+.avail-btn{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;background:var(--accent);color:#fff;border-radius:9px;padding:10px 16px;font:700 12.5px var(--ui);transition:background .2s,transform .2s}
+.avail-btn:hover:not(:disabled){background:#0c8f7f;transform:translateY(-1px)}
+.avail-btn:disabled{opacity:.7;cursor:default}
+.avail-btn svg{width:14px;height:14px}
+@container app (max-width:520px){ .avail-row{flex-direction:column;align-items:stretch} .avail-btn{justify-content:center} }
+
+/* ---------- Gate sheet + generic sheet ---------- */
+.sheet{position:absolute;left:50%;bottom:0;width:min(480px,100%);transform:translate(-50%,105%);transition:transform .45s var(--ease);z-index:61;background:var(--surface);border-radius:24px 24px 0 0;box-shadow:0 -20px 60px rgba(11,35,71,.25);padding:22px 22px calc(22px + env(safe-area-inset-bottom));max-height:92%;overflow:auto}
+.sheet.on{transform:translate(-50%,0)}
+.sheet-scrim{z-index:60}
+.sheet .grab{width:44px;height:5px;border-radius:3px;background:#D6DEE9;margin:-8px auto 14px}
+.sheet h3{font-size:21px;font-weight:800;line-height:1.2;color:var(--heading)}
+.sheet p.sub{font-family:var(--serif);font-size:15px;color:var(--soft);margin:6px 0 14px}
+.sheet .why-ask{font-size:11.5px;color:var(--soft);margin-top:10px;text-align:center}
+.fill{font-size:12px;font-weight:600;color:var(--secondary);text-decoration:underline;text-underline-offset:3px}
+.sheet-x{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:var(--soft)}
+.sheet-x:hover{background:#F1F5F9}
+.sheet-x svg{width:16px;height:16px}
+
+/* ---------- Comparison (brand-comparison design) ---------- */
+.cmpv{display:none;position:absolute;inset:0;overflow-y:auto;background:var(--bg);z-index:45}
+.cmpv.on{display:block}
+.cmp-stage{max-width:1080px;margin:0 auto;padding:28px 24px 120px}
+@container app (max-width:560px){ .cmp-stage{padding:16px 12px 100px} }
+.cmp-card{background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:0 18px 55px rgba(11,35,71,.08);--pad:40px;padding:30px var(--pad) 36px;position:relative}
+@container app (max-width:560px){ .cmp-card{--pad:16px;padding:22px var(--pad)} }
+.cmp-back{display:inline-flex;align-items:center;gap:6px;font:700 13px var(--ui);color:var(--secondary)}
+.cmp-back svg{width:15px;height:15px}
+.cmp-hero{text-align:center;padding:18px 0 34px}
+.cmp-hero h1{font:700 clamp(30px,4.4cqi,48px)/1.08 var(--serif);color:var(--heading);letter-spacing:-.015em;margin-top:6px;text-wrap:balance}
+.cmp-hero p{font:400 15px/1.6 var(--ui);color:var(--soft);margin:12px auto 0;max-width:520px}
+.cmp-hero .btn{margin-top:20px}
+.cmp-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px}
+@container app (max-width:760px){ .cmp-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px} .cmp-cols > :nth-child(3){display:none} }
+.cmp-col{min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center}
+.cmp-pick{position:relative;width:100%;max-width:260px;margin-bottom:22px}
+.cmp-pick select{appearance:none;-webkit-appearance:none;width:100%;border:1.5px solid var(--border);background:#fff;border-radius:12px;padding:10px 34px 10px 14px;font:600 13.5px var(--ui);color:var(--heading);cursor:pointer;text-overflow:ellipsis}
+.cmp-pick select:hover{border-color:var(--heading)}
+.cmp-pick svg{position:absolute;right:12px;top:50%;width:15px;height:15px;margin-top:-7.5px;color:var(--soft);pointer-events:none}
+.cmp-logo{width:96px;height:96px;border-radius:24px;box-shadow:0 12px 30px rgba(11,35,71,.10);display:grid;place-items:center;color:#fff;font:800 26px var(--ui);letter-spacing:.02em}
+@container app (max-width:560px){ .cmp-logo{width:72px;height:72px;border-radius:18px;font-size:20px} }
+.cmp-badge{display:inline-flex;align-items:center;gap:5px;margin-top:18px;font:700 11.5px var(--ui);border-radius:999px;padding:3px 10px;color:#0c8f7f;background:color-mix(in srgb,var(--accent) 16%,#fff)}
+.cmp-badge.good{color:#1d55c9;background:color-mix(in srgb,var(--secondary) 14%,#fff)}
+.cmp-name{font:700 22px/1.2 var(--serif);color:var(--heading);margin-top:10px;text-wrap:balance}
+.cmp-sub{font:400 13.5px/1.55 var(--ui);color:var(--soft);margin-top:6px;max-width:30ch}
+.cmp-price{margin-top:14px;font:600 15px var(--ui);color:var(--heading)}
+.cmp-actions{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:18px;width:100%}
+.cmp-req{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#fff;color:var(--heading);border:1.5px solid var(--border);border-radius:999px;padding:9px 18px;font:700 13.5px var(--ui)}
+.cmp-req:hover:not(:disabled){border-color:var(--secondary)}
+.cmp-req svg{width:14px;height:14px}
+.cmp-req.is-done{background:#e2f6f1;border-color:#e2f6f1;color:#0c8f7f;cursor:default}
+.cmp-avail{width:100%;max-width:270px;padding:14px 14px 12px;border:1px solid var(--border);border-radius:12px;background:var(--bg);display:flex;flex-direction:column;align-items:center;gap:6px}
+.cmp-avail-title{display:inline-flex;align-items:center;gap:6px;font:700 13px var(--ui);color:var(--heading)}
+.cmp-avail-title svg{width:15px;height:15px;color:var(--accent);flex:none}
+.cmp-avail-sub{font:400 12.5px/1.5 var(--ui);color:var(--soft)}
+.cmp-avail.is-sent{background:#effaf7;border-color:#cdeee3}
+.cmp-sent{display:flex;gap:8px;align-items:flex-start;text-align:left;font:400 12.5px/1.5 var(--ui);color:var(--heading);background:#effaf7;border:1px solid #cdeee3;border-radius:10px;padding:8px 10px;max-width:270px}
+.cmp-sent svg{width:15px;height:15px;color:var(--accent);flex:none;margin-top:2px}
+.cmp-section{margin-top:54px}
+.cmp-section-title{font:700 28px/1.2 var(--serif);color:var(--heading);padding-bottom:14px;border-bottom:1px solid var(--heading)}
+.cmp-row{padding:28px 0 4px}
+.cmp-row + .cmp-row{border-top:1px solid var(--border);margin-top:24px}
+.cmp-row-label{text-align:center;font:700 11.5px var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:16px}
+.cmp-cell{min-width:0;text-align:center;font:400 14.5px/1.6 var(--ui);color:var(--text);display:flex;flex-direction:column;align-items:center;gap:6px}
+.cmp-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--secondary) 10%,#fff);color:var(--secondary);margin-bottom:4px}
+.cmp-ico svg{width:17px;height:17px}
+.cmp-big{font:700 22px/1.25 var(--serif);color:var(--heading);text-wrap:balance}
+.cmp-cell small{font:400 13px/1.5 var(--ui);color:var(--soft);max-width:30ch}
+.cmp-missing{font:400 13px/1.5 var(--ui);color:var(--soft);font-style:italic;max-width:24ch}
+.cmp-feats{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;max-width:30ch}
+.cmp-feats li{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cmp-feats svg{width:18px;height:18px;color:var(--accent)}
+.fund-link{display:inline-flex;align-items:center;gap:5px;font:600 13px var(--ui);color:var(--secondary)}
+.fund-link svg{width:14px;height:14px}
+.cmp-foot{display:flex;gap:10px;align-items:flex-start;justify-content:center;margin-top:40px;font:400 13px/1.55 var(--ui);color:var(--soft);text-align:left}
+.cmp-foot svg{width:17px;height:17px;flex:0 0 17px;color:var(--secondary);margin-top:1px}
+.cmp-cta{margin-top:28px;background:var(--primary);border-radius:var(--r-md);padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:18px 28px;flex-wrap:wrap;position:relative;overflow:hidden}
+.cmp-cta::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:var(--secondary);opacity:.25;filter:blur(60px);right:-60px;top:-110px}
+.cmp-cta > *{position:relative}
+.cmp-cta h3{font:700 24px var(--serif);color:#fff}
+.cmp-cta p{font:400 14px/1.55 var(--ui);color:#C9D5EA;margin-top:6px;max-width:520px}
+
+/* ---------- Book a call, inline in the contact panel (book-a-call design, no chat widget) ---------- */
+.bk-back{display:inline-flex;align-items:center;gap:6px;font:700 12.5px var(--ui);color:#BFD2FF;margin-bottom:10px}
+.bk-back svg{width:14px;height:14px}
+.bk-steps{display:flex;gap:6px;margin:0 0 14px}
+.bk-steps span{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.18)}
+.bk-steps span.on{background:var(--accent)}
+.bk-card{background:#fff;color:var(--text);border-radius:14px;padding:14px;margin-top:4px}
+.bk-card .cw-when{margin:0 0 12px}
+.bk-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.bk-actions .btn{flex:1}
+.bk-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35)}
+.bk-ghost:hover{border-color:#fff}
+.bk-foot{margin-top:12px;font:400 11px/1.45 var(--ui);color:#AFC0DC;text-align:center}
+/* Compare page: booking panel replaces the CTA copy in place */
+.cmp-cta .contact{background:none;box-shadow:none;padding:0;width:100%;max-width:440px;margin:0 auto}
+.cmp-cta.booking{display:block}
+.cmp-cta-btns{display:flex;gap:10px;flex-wrap:wrap}
+.cmp-hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.cmp-hero-btns .btn{margin:0}
+.btn-ghost-dark{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}
+.btn-ghost-dark:hover{border-color:#fff}
+.cmp-sample{display:inline-block;margin-top:6px;font:700 10px var(--ui);letter-spacing:.06em;text-transform:uppercase;color:#8A5A00;background:#FFF1D6;border-radius:999px;padding:2px 8px}
+.cw-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px}
+.cw-day{border:1.5px solid var(--border);border-radius:9px;padding:5px 0 4px;text-align:center;background:#fff}
+.cw-day[aria-selected=true]{border-color:var(--primary);background:var(--primary)}
+.cw-day[aria-selected=true] .cw-dow,.cw-day[aria-selected=true] .cw-date{color:#fff}
+.cw-day:disabled{opacity:.4;cursor:default}
+.cw-dow{display:block;font:700 9.5px var(--ui);letter-spacing:.04em;text-transform:uppercase;color:var(--soft)}
+.cw-date{display:block;font:800 14px var(--ui);color:var(--heading);font-variant-numeric:tabular-nums}
+.cw-day .dot{display:block;width:4px;height:4px;border-radius:50%;background:var(--accent);margin:2px auto 0}
+.cw-day:disabled .dot{visibility:hidden}
+.cw-weeklabel{text-align:center;font:800 13.5px var(--ui);color:var(--heading);margin-bottom:10px}
+.cw-weeklabel small{display:block;font:700 10px var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--secondary)}
+.cw-dayname{font:700 12px var(--ui);color:var(--heading);margin-bottom:8px}
+.cw-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.cw-slot{padding:8px 2px;font:600 12.5px var(--ui);text-align:center;border-radius:9px;border:1.5px solid var(--border);background:#fff;color:var(--heading);font-variant-numeric:tabular-nums}
+.cw-slot:hover{border-color:var(--secondary);color:var(--secondary)}
+.cw-tz{margin-top:10px;font:400 11px var(--ui);color:var(--soft);text-align:center}
+.cw-when{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#effaf7;border:1px solid #cdeee3;margin-top:6px}
+.cw-when-icon{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center}
+.cw-when-icon svg{width:14px;height:14px}
+.cw-when b{display:block;font:800 13.5px var(--ui);color:var(--heading)}
+.cw-when span{font:400 12px var(--ui);color:var(--soft)}
+
+/* ---------- Toast ---------- */
+.toast{position:absolute;left:50%;top:76px;transform:translate(-50%,-20px);opacity:0;transition:all .35s var(--ease);z-index:90;background:var(--primary);color:#fff;padding:11px 16px;border-radius:12px;font-size:13.5px;font-weight:600;box-shadow:var(--shadow);max-width:min(520px,92%);text-align:center;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){ *{animation-duration:.001ms!important;transition-duration:.001ms!important} }
+</style>
+</head>
+<body>
+
+<div class="proto-bar" role="toolbar" aria-label="Prototype controls">
+  <b>IntelliFran · T1 Results v3 (prototype)</b>
+  <div class="seg" id="deviceSeg">
+    <button data-device="desktop" aria-pressed="true">Desktop</button>
+    <button data-device="mobile" aria-pressed="false">Mobile</button>
+  </div>
+  <span class="seg-label">Brand card hook</span>
+  <div class="seg" id="conceptSeg">
+    <button data-concept="a" aria-pressed="true" title="Highlighted checklist">A · Checklist</button>
+    <button data-concept="b" aria-pressed="false" title="Teaser tiles">B · Tiles</button>
+    <button data-concept="c" aria-pressed="false" title="Dark callout band">C · Callout</button>
+  </div>
+  <span class="spacer"></span>
+  <span class="state-pill" id="statePill">Anonymous</span>
+  <button class="chip-btn" id="resetBtn">Reset</button>
+</div>
+
+<div class="stage" id="stage">
+  <div class="device" id="device">
+    <div class="scroller" id="scroller">
+      <header class="site-header">
+        <div class="logo"><span class="a">Intelli</span><span class="b">Fran</span></div>
+      </header>
+
+      <main class="page">
+        <section class="hero" style="grid-column:1/-1">
+          <div class="eyebrow">Your initial matches</div>
+          <h1>We matched you with <span class="n">23 franchise brands</span>.<br>Here are 5 to explore.</h1>
+          <p class="lede">Based on your six answers, these are your strongest fits right now, grouped by the kind of business they are. Tap any brand to see what owning it actually looks like.</p>
+          <div class="vetted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>Every brand in your results is hand-vetted by franchise consultants</div>
+          <div class="recap"><span>Semi-absentee to start</span><span>Leads a team</span><span>$250K–$500K liquid</span><span>Open within 12 months</span><span>People-focused</span></div>
+        </section>
+
+        <div>
+          <div id="sectors"></div>
+          <div class="cmp-entry">
+            <div><div class="cmp-entry-title">Compare your matches side by side<span class="cmp-new">Free</span></div>
+            <div class="cmp-entry-sub">Owner role, the kind of work, support and what sets each brand apart.</div></div>
+            <button class="btn btn-primary btn-pill" data-compare id="cmpEntryBtn">Compare my matches</button>
+          </div>
+        </div>
+
+        <aside class="rail" aria-label="Contact">
+          <div class="contact" id="railContact"></div>
+        </aside>
+      </main>
+    </div>
+
+    <div class="mobile-cta" id="mobileCta"></div>
+
+    <!-- Brand card -->
+    <div class="scrim" id="drawerScrim"></div>
+    <aside class="drawer" id="drawer" aria-label="Brand details" aria-hidden="true">
+      <button class="drawer-close" id="drawerClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="drawer-scroll" id="drawerScroll"></div>
+      <div class="drawer-actions" id="drawerActions"></div>
+    </aside>
+
+    <!-- Comparison -->
+    <div class="cmpv" id="cmpView" aria-label="Compare brands"></div>
+
+    <!-- Contact gate -->
+    <div class="scrim sheet-scrim" id="sheetScrim"></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="grab"></div>
+      <button class="sheet-x" data-close="sheet" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <h3 id="sheetTitle"></h3>
+      <p class="sub" id="sheetSub"></p>
+      <form class="form" id="sheetForm" novalidate></form>
+    </div>
+
+    <!-- Funding explainer -->
+    <div class="scrim sheet-scrim" id="fundScrim"></div>
+    <div class="sheet" id="fundSheet" role="dialog" aria-modal="true" aria-labelledby="fundTitle">
+      <div class="grab"></div>
+      <button class="sheet-x" data-close="fund" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div id="fundBody"></div>
+    </div>
+
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   Sample data from the two-minute drills in /Marketing Data.
+   "why" lines are sample engine output for the recap profile above.
+   Never-shown drill content (dev contacts, Issues & Ambushes, sales
+   process, registration lists) is deliberately left out of this object.
+   ===================================================================== */
+const BRANDS = {
+  alloy: {
+    name:"Alloy Personal Training", short:"AL", sector:"retail", subcat:"Fitness · Small-group training", band:"Excellent Match",
+    grad:"linear-gradient(135deg,#2b2f06,#9aa30f)", img:"",
+    about:"Alloy Personal Training runs small-group personal training studios built for adults 45 to 65. The business started in 1992 and began franchising in 2019; 93 studios are open and more than 340 have been awarded. Studios cap at about 130 members, and the model is designed so a general manager runs the floor while the owner leads through weekly numbers.",
+    hook:"Small-group personal training for 45–65 year olds, the age group that holds over 70% of U.S. disposable income.",
+    perks:["Semi-absentee friendly","SBA-registered","Veteran discount","Multi-unit available"],
+    why:"You want to lead a team rather than work the floor. Alloy is built for an executive owner: a well-paid GM runs the studio while you manage through weekly KPIs.",
+    glance:[["1992","Business started"],["2019","Franchising since"],["93","Units open"],["340+","Units awarded"],["$59.8B","Industry · +7.6%/yr"]],
+    day:["Semi-absentee: manage through KPIs, drive culture, hire coaches who build community, regular calls with home office","Owner-operator option: be the face of the studio and lead sessions (no certification required)","Pre-sell memberships for 10–13 weeks before opening","~55 one-hour sessions a week; closed Sundays; 3–4 employees"],
+    who:["Leaders who set expectations and hold people accountable","Effective communicators","People who like running a proven play","Want a positive impact on their community","Fitness passion helps, but industry experience isn't required"],
+    apart:["Targets 45–65 year olds instead of the crowded 28–35 bracket","Charges about twice the average boutique membership, with ~93% annual retention","Studios cap at 130 members, so at capacity you sell 1–2 memberships a week, not a day"],
+    support:["Pre-sales playbook, tested hundreds of times","Trains every owner in EOS (Entrepreneurial Operating System)","Site selection and build-out project management","440-page online training library","3rd-party agency places all advertising"],
+    invest:[["Total investment","$298,650 – $541,120"],["Liquid capital required","$175,000"],["Net worth required","$450,000"],["Franchise fee","$60,000 (1 unit)"],["Royalty","7%"],["Ad fund","2–8%"],["Credit score","680+"]],
+    from:"$299K", range:"$299K – $541K",
+    role:["Semi-absentee","A GM runs the studio; you manage through KPIs."],
+    sales:["Active selling","You pre-sell about 75 members before you open."],
+    type:["Retail · Fitness","Storefront studio · sells to adults 45–65"],
+    units:["93 locations","92 franchised, 1 company-owned"],
+    leadgen:"A 3rd-party agency places all advertising.",
+    item19:null
+  },
+  bodybar: {
+    name:"BODYBAR Pilates", short:"BB", sector:"retail", subcat:"Fitness · Reformer Pilates", band:"Excellent Match",
+    grad:"linear-gradient(135deg,#0f5f63,#55c7c3)", img:"",
+    about:"BODYBAR Pilates runs boutique reformer Pilates studios with a spa-like feel and 14 reformers per room. It started in 2012 and began franchising in 2019; 59 studios are open, and more than half of its owners run more than one. Most revenue comes from recurring monthly memberships, and new studios are presold before they open.",
+    hook:"Spa-like Pilates studios with 14 reformers per room: about 17% more class capacity than the only national competitor.",
+    perks:["Semi-absentee friendly","SBA-registered","Veteran discount","Multi-unit available"],
+    why:"You told us you'd rather build a team than do the work yourself. BODYBAR runs on ~7 staff, and over half its owners already run more than one studio.",
+    glance:[["2012","Business started"],["2019","Franchising since"],["59","Units open"],["52%","Multi-unit owners"],["$15.8B","Industry size"]],
+    day:["Semi-absentee: own the marketing plan, review KPIs with your team, build culture and community partnerships, manage cash flow","Owner-operator option: lead and train staff, run sales and retention, keep the studio tied into the local community","About 7 employees: 2 managers, 3 instructors (\"BARtenders\"), 2 sales reps"],
+    who:["No fitness experience required: a love for wellness and community is enough","Background in business, sales, marketing or customer service","Strong leadership and team management","People-oriented: you enjoy connecting with others"],
+    apart:["14 reformers vs. 12 at the national competitor, which means more revenue per class","77% of revenue comes from recurring monthly memberships","Presale strategy built so studios can be cash-flow positive when classes start"],
+    support:["Online learning system plus business training for owners and managers","Instructor training, presale playbook and grand-opening support","Real estate rep, site selection, national contractor and architect","Payroll, bookkeeping and recruiting support"],
+    invest:[["Total investment","$389,964 – $759,356"],["Liquid capital required","$200,000"],["Net worth required","$600,000"],["Franchise fee","$60,000"],["Royalty","7%"]],
+    from:"$390K", range:"$390K – $759K",
+    role:["Semi-absentee","Managers run classes; you own marketing, KPIs and culture."],
+    sales:["Active selling","Two sales reps on staff; memberships presold before opening."],
+    type:["Retail · Fitness","Studio · sells to consumers"],
+    units:["59 locations","56 franchised, 3 company-owned"],
+    leadgen:"Monthly advertising and marketing assistance.",
+    item19:null
+  },
+  iflex: {
+    name:"iFlex Stretch Studios", short:"iF", sector:"retail", subcat:"Health & Wellness · Assisted stretch", band:"Great Match",
+    grad:"linear-gradient(135deg,#111,#3a3a3a 60%,#e9cf00)", img:"t1-v3-assets/iflex.jpg",
+    about:"iFlex Stretch Studios offers one-on-one assisted stretching in semi-private studios of 1,000 to 1,500 sq ft. It comes from co-founders of The Joint Chiropractic. It's an early-stage brand: 5 studios are open, 6 more are sold, and regional developers hold more than 200 licenses. There's no inventory to carry.",
+    hook:"Assisted-stretch studios from the co-founders of The Joint Chiropractic.",
+    perks:["Emerging brand","No inventory","Small footprint"],
+    why:"Wellness concepts tend to run semi-absentee once staffed, and iFlex's small 1,000–1,500 sq ft footprint keeps the build-out lean for your budget.",
+    glance:[["5","Units open"],["6","Sold, not yet open"],["200+","Licenses awarded to regional developers"],["$52B","U.S. market"]],
+    day:null, who:null,
+    apart:["Semi-private tables with dividers, where competitors use open floors","Full 8-second resistance stretching (competitors cut it to 3)","Re-evaluation at the end of every session plus written recommendations","No inventory and a 1,000–1,500 sq ft footprint"],
+    support:["Real estate and site selection","Construction and equipment","Training","Business systems","Marketing","Technology"],
+    invest:[["Total investment (Item 7)","$172,350 – $297,450"],["Franchise fee","$39,000"],["Royalty","7%"],["National ad fund","1%"]],
+    from:"$172K", range:"$172K – $297K",
+    role:null, sales:null,
+    type:["Retail · Wellness","1,000–1,500 sq ft studio · sells to consumers"],
+    units:["11 sold","5 open, 6 sold and not yet open"],
+    leadgen:"Marketing support included in the franchise package.",
+    item19:null
+  },
+  lightbridge: {
+    name:"Lightbridge Academy", short:"LA", sector:"retail", subcat:"Children's · Educational child care", band:"Great Match",
+    grad:"linear-gradient(135deg,#0a6fc2,#45a3e6 60%,#8bc53f)", img:"t1-v3-assets/lightbridge.jpg",
+    about:"Lightbridge Academy runs educational child care centers for working families. Its first center opened in 1997, and it has franchised since 2011; 80 academies are open today. Owners get 177 hours of training plus real estate, design and construction teams that specialize in child care.",
+    hook:"Educational child care centers with a 0% default rate on SBA loans and a FUND score of 910.",
+    perks:["SBA lending track record","Multi-unit available"],
+    why:"You're people-focused and want something with staying power. Child care is community-facing and needs an owner who's comfortable being visible locally, which matched your answers.",
+    glance:[["1997","First center opened"],["2011","Franchising since"],["80","Academies open"],["0%","SBA loan default rate"]],
+    day:null, who:null,
+    apart:["Circle of Care and core values that shape the culture","Technology and parent experience: \"Innovators in Educational Child Care®\"","Everything is tested in corporate locations first","Multi-unit opportunities"],
+    support:["177 hours of on-site and virtual training","Child-care real estate experts and in-market location tours","Letter of intent and lease templates, plus a 48-month financial model","Design and construction teams specialized in child care","Dedicated launch consultant, field visits and peer mentoring"],
+    invest:[["Total investment","Not in drill (fallback: FDD Item 7)"],["Liquid capital required","$250,000"],["Net worth required","$750,000"],["Royalty","4% for first 6 months, then 7%"],["Agreement term","15 years + two 5-year renewals"],["Lending partners","4 banks incl. Live Oak"]],
+    from:null, range:null,
+    role:null, sales:null,
+    type:["Retail · Child care","Child care center · sells to families"],
+    units:["80 locations","Open academies"],
+    leadgen:null,
+    item19:null
+  },
+  mrrooter: {
+    name:"Mr. Rooter Plumbing", short:"MR", sector:"home", subcat:"Home Services · Plumbing", band:"Great Match",
+    grad:"linear-gradient(135deg,#b3001b,#e5262f 60%,#1c3f94)", img:"t1-v3-assets/mrrooter.jpg",
+    about:"Mr. Rooter Plumbing provides plumbing service to homes and businesses across the U.S. and Canada, and has been in business for more than 50 years. It's part of Neighborly, a family of 30+ home-service brands with 5,500+ locations. Owners run an executive model: you lead the team and build relationships while licensed plumbers do the work.",
+    hook:"50+ years of plumbing, backed by Neighborly's 30+ home-service brands and 5,500+ locations.",
+    perks:["Veteran discount","Entrepreneur Franchise 500 #1 in category"],
+    why:"Essential services hold up in any economy, and the executive model fits your plan to lead a team rather than turn wrenches yourself.",
+    glance:[["50+","Years in business"],["100s","Locations, U.S. & Canada"],["#1","Franchise 500 category, 2024 & 2025"],["$4.1B","Neighborly systemwide revenue"]],
+    day:["Scalable executive model: lead your team and build relationships with home and business owners","Family-friendly work week with a flexible schedule","Needs a qualifying license holder and a physical location in your territory"],
+    who:null,
+    apart:["Essential services that hold up regardless of the economy","Specialized techniques, equipment and technology most independents can't offer","Many owners pass the business to family"],
+    support:["Classroom and hands-on training in operations, sales and marketing","Neighborly's systems, scale and 40+ years of franchising experience"],
+    invest:[["Total investment","$122,303 – $263,800"],["Liquid capital required","$100,000"],["Net worth required","$250,000"],["Veteran discount","20% off franchise fee"]],
+    from:"$122K", range:"$122K – $264K",
+    role:["Executive model","Lead the team; a licensed plumber runs the jobs."],
+    sales:null,
+    type:["Home Services · Plumbing","Service vans · homes and businesses"],
+    units:["Hundreds of locations","Across the U.S. and Canada"],
+    leadgen:null,
+    item19:"t1-v3-assets/item19-mrrooter.html" /* link to the brand's Item 19 PDF; swap in the real FDD file */
+  }
+};
+const ORDER = ["alloy","bodybar","iflex","lightbridge","mrrooter"];
+
+/* Matches 6–10 exist only for the comparison (compare covers the top 10).
+   We have drills for 5 brands, so these are FICTIONAL placeholders with
+   sample values, flagged sample:true and labeled in the UI. */
+Object.assign(BRANDS, {
+  s6: { sample:true, name:"Senior Care Brand", short:"SC", sector:"home", subcat:"Home Services · In-home senior care", band:"Great Match",
+    grad:"linear-gradient(135deg,#5b2a86,#a77bd6)", hook:"Non-medical in-home care for older adults who want to stay in their own homes.",
+    apart:["Recurring weekly care hours, not one-off jobs","Referral network of hospitals and care facilities","Office-based: no storefront build-out"],
+    from:"$110K", range:"$110K – $180K", role:["Executive model","A care manager schedules caregivers; you build referral relationships."],
+    sales:["Relationship selling","You meet discharge planners and care facilities."], type:["Home Services · Senior care","Small office · sells to families"],
+    units:null, leadgen:"National web leads routed to your territory." },
+  s7: { sample:true, name:"Restoration Brand", short:"RB", sector:"home", subcat:"Home Services · Water & fire restoration", band:"Great Match",
+    grad:"linear-gradient(135deg,#7a3b00,#e07b1f)", hook:"Emergency water, fire and mold restoration, mostly paid through insurance claims.",
+    apart:["Insurance-driven demand that doesn't depend on the economy","Commercial accounts alongside residential","24/7 call center included"],
+    from:"$190K", range:"$190K – $320K", role:["Owner-operator to start","You run jobs early, then hire a production manager."],
+    sales:["Relationship selling","Build ties with insurance agents and property managers."], type:["Home Services · Restoration","Warehouse + vans · homes and businesses"],
+    units:null, leadgen:null },
+  s8: { sample:true, name:"Kids' Enrichment Brand", short:"KE", sector:"retail", subcat:"Children's · After-school enrichment", band:"Good Match",
+    grad:"linear-gradient(135deg,#0d7a5f,#5ad1a8)", hook:"STEM and coding classes for ages 5–14, run in a learning center and at local schools.",
+    apart:["Year-round revenue from classes, camps and parties","School partnerships bring in families","Curriculum updated by the brand every term"],
+    from:"$150K", range:"$150K – $260K", role:["Semi-absentee","A center director runs classes; you grow school partnerships."],
+    sales:null, type:["Retail · Children's education","Learning center · sells to families"],
+    units:null, leadgen:"Local digital campaigns run by the brand." },
+  s9: { sample:true, name:"Staffing Brand", short:"ST", sector:"biz", subcat:"Business Services · Staffing", band:"Good Match",
+    grad:"linear-gradient(135deg,#1c3f94,#4d7be0)", hook:"Light-industrial and office staffing for local employers, with payroll funding provided.",
+    apart:["Payroll funding included, so you don't carry the float","B2B accounts that repeat every week","Recruiting tech and back office provided"],
+    from:"$120K", range:"$120K – $200K", role:["Full-time to start","You sell to employers while a recruiter fills orders."],
+    sales:["Active selling","Weekly business development calls with employers."], type:["Business Services · Staffing","Office · sells to businesses"],
+    units:null, leadgen:null },
+  s10: { sample:true, name:"Commercial Cleaning Brand", short:"CC", sector:"biz", subcat:"Business Services · Commercial cleaning", band:"Good Match",
+    grad:"linear-gradient(135deg,#0b5e7a,#38b2d6)", hook:"Recurring janitorial contracts for offices, clinics and schools.",
+    apart:["Contracts bill monthly, so revenue is predictable","Low equipment cost","Can start home-based"],
+    from:"$60K", range:"$60K – $110K", role:null,
+    sales:["Active selling","You bid on and win cleaning contracts."], type:["Business Services · Cleaning","Home-based to start · sells to businesses"],
+    units:null, leadgen:"Brand-run appointment setting for sales meetings." }
+});
+const TOP10 = [...ORDER, "s6","s7","s8","s9","s10"];
+Object.keys(BRANDS).forEach(k=>BRANDS[k].key=k);
+
+/* Suggested opening questions on "Ask about this brand": one brand-specific,
+   then the questions candidates most often ask a consultant. */
+const ASKS = {
+  alloy:["How does the 10–13 week presale work?"],
+  bodybar:["Do I need a Pilates background?"],
+  iflex:["What's it like being an early franchisee?"],
+  lightbridge:["Do I need child care experience?"],
+  mrrooter:["Do I need to be a licensed plumber?"]
+};
+const COMMON_ASKS = ["What do owners typically earn?","Can I start while keeping my job?","How would I finance this?"];
+
+const SECTORS = [
+  { id:"retail", rank:1, name:"Retail & Brick-and-Mortar", band:"Strong match", total:14,
+    strip:["Often <strong>semi-absentee</strong> once staffed","<strong>Larger teams</strong> (4–8 staff)","Storefront or studio","<strong>14 brands</strong> match you"],
+    free:["alloy","bodybar","iflex","lightbridge"] },
+  { id:"home", rank:2, name:"Home Services", band:"Good match", total:6,
+    strip:["Service vans, <strong>no storefront</strong>","<strong>Lean teams</strong>","Demand holds up in downturns","<strong>6 brands</strong> match you"],
+    free:["mrrooter"] },
+  { id:"biz", rank:3, name:"Business Services", band:"Good match", total:3,
+    strip:["B2B: you sell to other businesses","Often <strong>home-based</strong>","Usually <strong>full-time</strong> to start","<strong>3 brands</strong> match you"],
+    free:[] }
+];
+
+/* Gate copy per action. "Territory check" is internal language and never shown. */
+const GATES = {
+  general:  ()=>({t:"Want the numbers on your matches?", s:"Tell us where to send your full list of 23. We'll unlock how locations perform, what each costs to open, availability in your area and how owners finance it."}),
+  more:     (b,sec)=>({t:`See all ${sec.total} ${sec.name} matches`, s:"Where should we send your full list? We'll also unlock the numbers on every brand."}),
+  hook:     b=>({t:`Unlock everything on ${b.name}`, s:`How locations perform, what it takes to open one, availability in your market and how owners finance it. Plus all 23 of your matches.`}),
+  invest:   b=>({t:`See what it takes to open a ${b.name}`, s:"Investment range, cash and net-worth requirements, fees and royalty."}),
+  item19:   b=>({t:`See ${b.name}'s Financial Performance`, s:`${b.name} publishes Item 19 of its Franchise Disclosure Document. Unlock it to open the PDF.`}),
+  avail:    b=>({t:`Is ${b.name} available in your market?`, s:"Start with your ZIP. We'll find out if this brand is available where you want to open.", zipFirst:true}),
+  finance:  b=>({t:`How do ${b.name} owners finance it?`, s:"Unlock common funding paths for this brand. Our funding partners can walk you through options if you'd like."}),
+  compare:  ()=>({t:"Compare your top 10 matches", s:"Unlock matches 6–10 and add them to your side-by-side comparison."}),
+  refineAll:()=>({t:"Refine my matches", s:"A few more questions sharpen your list. We'll save your progress so you can pick up anytime."})
+};
+
+/* Brand-card hook box concept (prototype switcher): a | b | c. ?concept=b links straight to one. */
+let concept = (new URLSearchParams(location.search).get("concept")||"a").toLowerCase();
+if (!["a","b","c"].includes(concept)) concept = "a";
+
+/* ---------- State ---------- */
+const store = { get(k){ try{return localStorage.getItem(k);}catch(e){return null;} }, set(k,v){ try{localStorage.setItem(k,v);}catch(e){} }, del(k){ try{localStorage.removeItem(k);}catch(e){} } };
+let unlocked = store.get("t1bc3-unlocked")==="1";
+let person = { first:"Jordan", email:"jordan@example.com", zip:"" };
+try { const p = JSON.parse(store.get("t1bc3-person")||"null"); if (p) person = p; } catch(e){}
+let booked = Number(store.get("t1bc3-booked")) || null;
+const bs = {}; ORDER.forEach(id=>bs[id]={avail:"idle",info:"idle",q:""});
+let fundState = "idle";
+let currentBrand = null, pending = null;
+let cmpCols = ["alloy","bodybar","mrrooter"];
+
+const $ = s=>document.querySelector(s);
+const svg = (d,w=2.2)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const ICON = {
+  lock:svg('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>'),
+  check:svg('<path d="M5 12l5 5L20 7"/>',2.6),
+  arrow:svg('<path d="M5 12h14M13 6l6 6-6 6"/>',2.4),
+  back:svg('<path d="M19 12H5M11 18l-6-6 6-6"/>',2.4),
+  pin:svg('<path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'),
+  bell:svg('<path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 003.4 0"/>'),
+  mail:svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
+  msg:svg('<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>'),
+  cal:svg('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'),
+  chev:svg('<path d="M6 9l6 6 6-6"/>',2.4),
+  info:svg('<circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>'),
+  user:svg('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/>'),
+  coin:svg('<circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 00-3-1.5c-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2a3 3 0 01-3-1.5M12 6v2M12 16v2"/>'),
+  phone:svg('<path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/>'),
+  store:svg('<path d="M3 9l1.5-5h15L21 9M3 9v11h18V9M3 9h18M9 20v-6h6v6"/>'),
+  map:svg('<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/>'),
+  chart:svg('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+  doc:svg('<path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>'),
+  ext:svg('<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/>'),
+  bank:svg('<path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/>'),
+  spark:svg('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>')
+};
+const sm = (icon,px=14)=>icon.replace('<svg',`<svg width="${px}" height="${px}"`);
+const MISSING = `<span class="cmp-missing">Not listed yet. Your consultant can cover this.</span>`;
+const photo = b=>b.img
+  ? `<div class="photo has-img" style="background:${b.grad}"><img src="${b.img}" alt="${b.name}" loading="lazy"><span class="logo-chip">${b.name.split(" ")[0].toUpperCase()}</span></div>`
+  : `<div class="photo" style="background:${b.grad}"><span class="wordmark">${b.name}</span></div>`;
+
+/* ---------- T1 results ---------- */
+function renderSectors(){
+  $("#sectors").innerHTML = SECTORS.map(sec=>{
+    const tiles = sec.free.map(id=>{
+      const b = BRANDS[id];
+      const foot = unlocked
+        ? `<span class="locked-line" style="color:var(--primary)">${b.from?`From ${b.from}`:"Investment: ask us"}</span>`
+        : `<span class="locked-line">${sm(ICON.lock,13)} Investment <span class="blur">$000K–$000K</span></span>`;
+      return `<article class="tile"><button class="tile-open" data-open="${id}">${photo(b)}
+        <div class="tile-body"><div class="subcat">${b.subcat}</div><h3>${b.name}</h3><p class="hook">${b.hook}</p>
+          <div class="chips">${b.perks.slice(0,2).map(p=>`<span class="chip">${p}</span>`).join("")}</div>
+          <div class="tile-foot">${foot}<span class="view">View brand →</span></div></div></button></article>`;
+    }).join("");
+    const remaining = sec.total - sec.free.length;
+    let more = "";
+    if (remaining>0){
+      const what = sec.free.length ? `${remaining} more ${sec.name} brands match you` : `${remaining} ${sec.name} brands match you`;
+      more = unlocked
+        ? `<div class="more-banner done"><span class="mb-ico">${ICON.check}</span><div class="mb-copy"><strong>${what}.</strong><span>They're in your full list, on its way to ${person.email}.</span></div></div>`
+        : `<button class="more-banner" data-gate="more" data-sector="${sec.id}">
+             <span class="mb-num">+${remaining}</span>
+             <div class="mb-copy"><strong>${what}.</strong><span>Tell us where to send them and we'll sharpen your list.</span></div>
+             <span class="btn btn-primary mb-btn">See my ${remaining} more ${ICON.arrow}</span></button>`;
+    }
+    const emptyNote = sec.free.length===0 && !unlocked ? `<p class="empty-note">None of your top 5 are in this category, but ${sec.total} brands here still fit your profile.</p>` : "";
+    return `<section class="sector" id="sec-${sec.id}">
+      <div class="sector-head"><div class="sector-title"><span class="rank">${sec.rank}</span><h2>${sec.name}</h2></div><span class="band ${sec.rank>1?"good":""}">${sec.band}</span></div>
+      <div class="strip">${sec.strip.map(s=>`<span>${s}</span>`).join("")}</div>
+      ${emptyNote}
+      ${tiles?`<div class="brand-grid">${tiles}</div>`:""}
+      ${more}
+    </section>`;
+  }).join("");
+}
+
+function formHTML(opts={}){
+  const zip = `<input type="text" name="zip" inputmode="numeric" maxlength="5" placeholder="ZIP code" aria-label="ZIP code" required>`;
+  return `${opts.zipFirst?zip:""}
+    <div class="row"><input type="text" name="first" placeholder="First name" aria-label="First name" required><input type="text" name="last" placeholder="Last name" aria-label="Last name" required></div>
+    <input type="email" name="email" placeholder="Email" aria-label="Email" required>
+    <input type="tel" name="phone" placeholder="Phone" aria-label="Phone" required>
+    ${opts.zipFirst?"":zip}
+    <label class="consent"><input type="checkbox" name="consent" required> I agree to be contacted by Intellifran about my matches. No spam, unsubscribe anytime.</label>
+    <button class="btn ${opts.dark?"btn-primary":"btn-dark"} submit" type="submit">${opts.cta||"Send me more information"}</button>`;
+}
+const fmtDay = d=>d.toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric"});
+const fmtTime = d=>d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+
+function renderRail(){
+  const el = $("#railContact");
+  if (bookHost==="rail"){ el.classList.toggle("done", bookStep==="booked"); el.innerHTML = bookFlowHTML(); return; }
+  if (unlocked){
+    el.classList.add("done");
+    el.innerHTML = `<h3>You're all set ✓</h3><p class="sub" style="color:#D3F3EE">Your full list of 23 is unlocked and on its way to ${person.email}. Explore any brand, or talk it through with a consultant.</p>
+      ${booked?`<div class="booked">Your call is booked<b>${fmtDay(new Date(booked))} at ${fmtTime(new Date(booked))}</b></div>`:""}
+      <button class="btn btn-primary" style="width:100%" data-book>${booked?"✓ View your call":"Book a call"}</button>`;
+    return;
+  }
+  el.classList.remove("done");
+  el.innerHTML = `<h3>Want the numbers on your matches?</h3>
+    <p class="sub">You've seen 5 of your 23 matches. Tell us where to send the rest, and we'll unlock:</p>
+    <ul class="unlock-list"><li>${ICON.check}How these locations perform</li><li>${ICON.check}What it costs to open one</li><li>${ICON.check}Whether it's available in your market</li><li>${ICON.check}How owners typically finance it</li><li>${ICON.check}All 23 of your matches</li></ul>
+    <form class="form" novalidate>${formHTML({dark:true})}</form>
+    <button class="secondary-link" data-book>Prefer to talk? Book a call.</button>`;
+}
+
+/* ---------- Ask about this brand ---------- */
+let askBrand = null;
+function openAsk(id){
+  askBrand = id; currentBrand = currentBrand || id;
+  const b = BRANDS[id];
+  $("#sheetTitle").textContent = `Ask about ${b.name}`;
+  $("#sheetSub").textContent = "Ask anything. A franchise consultant who knows this brand will reply, usually within one business day.";
+  $("#sheetForm").innerHTML = `<textarea class="ask-box" name="q" placeholder="What would you like to know about ${b.name}?" aria-label="Your question"></textarea>
+    <div class="suggest">${[...(ASKS[id]||[]), ...COMMON_ASKS].map(q=>`<button type="button" data-suggest="${q}">${q}</button>`).join("")}</div>
+    ${unlocked
+      ? `<button class="btn btn-dark submit" type="submit">Send my question</button>`
+      : `<div class="ask-divider">Where should the answer go?</div>${formHTML({cta:"Send my question"})}
+         <p class="why-ask">We ask once. After this, everything on this page is open. <button type="button" class="fill" data-fill>Fill sample</button></p>`}`;
+  $("#sheetForm").dataset.source = "ask";
+  $("#sheet").classList.add("on"); $("#sheetScrim").classList.add("on");
+  setTimeout(()=>$("#sheetForm .ask-box")?.focus({preventScroll:true}), 350);
+}
+function sendFor(id, kind){
+  bs[id][kind]="sending"; repaintBrandBits(id);
+  setTimeout(()=>{ bs[id][kind]="sent"; repaintBrandBits(id);
+    toast(kind==="info" ? `Question sent. A consultant will reply about ${BRANDS[id].name} within one business day.`
+                        : `Request sent. We'll let you know if ${BRANDS[id].name} is available in your area.`); }, 900);
+}
+function repaintBrandBits(id){
+  renderSectors();
+  if (currentBrand===id && $("#drawer").classList.contains("on")) { const st=$("#drawerScroll").scrollTop; openBrand(id); $("#drawerScroll").scrollTop=st; }
+  if ($("#cmpView").classList.contains("on")) { const st=$("#cmpView").scrollTop; renderCompare(); $("#cmpView").scrollTop=st; }
+}
+
+/* ---------- Brand card ---------- */
+function listSec(title, items){
+  if (!items) return "";
+  return `<div class="d-sec"><h4>${title}</h4><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul></div>`;
+}
+function gatedSec(title, inner, gate, veilText, id){
+  return `<div class="d-sec"><h4>${title} ${unlocked?"":`<span class="tag">🔒 Contact</span>`}</h4>
+    <div class="gated ${unlocked?"":"locked"}"><div class="content">${inner}</div>
+      <div class="veil"><p>${veilText}</p><button class="btn btn-primary btn-sm" data-gate="${gate}" data-brand="${id}">${sm(ICON.lock)} Unlock</button></div></div></div>`;
+}
+
+/* ---------- Hook box: the four things people want to know ----------
+   Financial Performance only appears when the brand publishes an Item 19.
+   After unlock it's a link to the brand's Item 19 PDF: linked, never
+   extracted, charted or interpreted. */
+function hooks(id){
+  const b = BRANDS[id], s = bs[id] || {};
+  const zip = person.zip ? ` near ${person.zip}` : "";
+  const list = [];
+  if (b.item19) list.push({ key:"item19", icon:ICON.chart,
+    q:"Financial Performance", sub:`Item 19 of ${b.name}'s Franchise Disclosure Document (PDF)`,
+    prev:"FDD · Item 19 · PDF",
+    ans:`<a class="hk-link" href="${b.item19}" target="_blank" rel="noopener">${sm(ICON.doc)} Financial Performance (PDF) ${sm(ICON.ext,12)}</a><span class="hk-note">Published by ${b.name} in its FDD, Item 19. Questions? Ask a consultant.</span>` });
+  list.push({ key:"invest", icon:ICON.coin,
+    q:`What does it take to open a ${b.name}?`, sub:"Total investment, cash and net worth required, fees",
+    prev:"$000K – $000K",
+    ans:`<span class="hk-ans">${b.range ? `${b.range} total investment` : "Total investment: ask a consultant"}</span><span class="hk-note">Full breakdown in Investment &amp; requirements below.</span>` });
+  list.push({ key:"avail", icon:ICON.pin,
+    q:`Is ${b.name} available in my market?`, sub:"We check your ZIP against open territories",
+    prev:"ZIP 00000 · Open",
+    ans: s.avail==="sent"
+      ? `<span class="hk-sent">${sm(ICON.check)} Requested${zip}</span><span class="hk-note">We'll email you what we find, usually within one business day.</span>`
+      : `<button class="hk-link" data-gate="avail" data-brand="${id}">${sm(ICON.pin)} Check availability${zip}</button>` });
+  list.push({ key:"finance", icon:ICON.bank,
+    q:`How do ${b.name} owners typically finance it?`, sub:"Common funding paths, including SBA loans",
+    prev:"SBA · 401(k) · Lenders",
+    ans:`<button class="hk-link" data-fund>${sm(ICON.info)} How franchises are funded</button><span class="hk-note">Many owners finance a large share of the total investment.</span>` });
+  return list;
+}
+function hookBox(id){
+  const b = BRANDS[id], H = hooks(id);
+  const n = H.length===4 ? "four" : "three";
+  if (concept==="b"){
+    return `<div class="hk-b ${unlocked?"open":""}">
+      <div class="hk-eyebrow">${unlocked?"Unlocked for you":"Want to learn more?"}</div>
+      <h3 class="hk-title">${unlocked?`${b.name}: the details`:`The answers are right here.`}</h3>
+      <div class="grid">${H.map(h=>unlocked
+        ? `<div class="hk-tile"><span class="hk-q">${h.q}</span><div class="hk-prev">${h.ans}</div></div>`
+        : `<button class="hk-tile locked" data-gate="${h.key}" data-brand="${id}"><span class="hk-q">${h.q}</span><div class="hk-prev">${h.prev}</div><span class="hk-pill">${ICON.lock} Unlock</span></button>`).join("")}</div>
+      ${unlocked?"":`<p class="hk-foot">One quick form unlocks all ${n}, plus your full list of 23.</p>`}</div>`;
+  }
+  if (concept==="c"){
+    return `<div class="hk-c ${unlocked?"open":""}">
+      <div class="hk-eyebrow">${unlocked?`Unlocked for you, ${person.first}`:"Free · one quick form"}</div>
+      <h3 class="hk-title">${unlocked?`The numbers on ${b.name}`:`Want the numbers on ${b.name}?`}</h3>
+      <ul>${H.map(h=>unlocked
+        ? `<li><div class="hk-c-row"><b>${h.q}</b>${h.ans}</div></li>`
+        : `<li><button data-gate="${h.key}" data-brand="${id}">${ICON.check}<span>${h.q}</span></button></li>`).join("")}</ul>
+      ${unlocked?"":`<button class="btn hk-unlock" data-gate="hook" data-brand="${id}">Unlock the numbers ${ICON.arrow}</button>
+      <p class="hk-foot">Free. A consultant follows up only if you want.</p>`}</div>`;
+  }
+  return `<div class="hk-a ${unlocked?"open":""}">
+    <div class="hk-eyebrow">${unlocked?"Unlocked for you":"Free · one quick form"}</div>
+    <h3 class="hk-title">${unlocked?`${b.name}: the details`:`Want to learn more about ${b.name}?`}</h3>
+    <div class="rows">${H.map(h=>unlocked
+      ? `<div class="hk-row"><span class="hk-ico">${h.icon}</span><div><span class="hk-q">${h.q}</span><div style="margin-top:4px">${h.ans}</div></div></div>`
+      : `<button class="hk-row" data-gate="${h.key}" data-brand="${id}"><span class="hk-ico">${h.icon}</span><span><span class="hk-q">${h.q}</span><span class="hk-sub">${h.sub}</span></span><span class="hk-lock">${ICON.lock}</span></button>`).join("")}</div>
+    ${unlocked?"":`<button class="btn btn-primary hk-unlock" data-gate="hook" data-brand="${id}">${sm(ICON.lock)} Unlock all ${n}</button>
+    <p class="hk-foot">Takes 30 seconds. Also unlocks your full list of 23.</p>`}</div>`;
+}
+
+function openBrand(id){
+  currentBrand = id;
+  const b = BRANDS[id];
+  $("#drawerScroll").innerHTML = `
+    <div class="d-hero">${photo(b)}</div>
+    <div class="d-head"><div class="subcat">${b.subcat}</div><h2>${b.name}</h2><p class="hook">${b.hook}</p>
+      <div class="chips" style="margin-top:12px">${b.perks.map(p=>`<span class="chip">${p}</span>`).join("")}</div></div>
+    ${b.about?`<div class="d-sec"><h4>About ${b.name}</h4><p class="about">${b.about}</p></div>`:""}
+    <div class="d-sec"><h4>Why it matches you</h4><div class="why">${b.why}</div></div>
+    <div class="d-sec"><h4>At a glance</h4><div class="glance">${b.glance.map(g=>`<div><b>${g[0]}</b><span>${g[1]}</span></div>`).join("")}</div></div>
+    <div class="hook-wrap">${hookBox(id)}</div>
+    ${listSec("A day as an owner", b.day)}
+    ${listSec("Who thrives here", b.who)}
+    ${listSec("What sets it apart", b.apart)}
+    ${listSec("Support you get", b.support)}
+    ${gatedSec("Investment &amp; requirements", `<dl class="kv">${b.invest.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")}</dl><p style="margin-top:12px"><button class="fund-link" data-fund>${sm(ICON.info)} How franchises are funded</button></p>`, "invest", "See what it takes to open one.", id)}
+    <div style="height:12px"></div>`;
+  const s = bs[id];
+  $("#drawerActions").innerHTML = `
+    ${s.info==="sent" ? `<button class="btn c-done" disabled>${sm(ICON.check)} Question sent</button>`
+      : `<button class="btn btn-primary" data-ask="${id}">${sm(ICON.msg,16)} Ask about this brand</button>`}
+    ${s.avail==="sent" ? `<button class="btn c-done" disabled>${sm(ICON.check)} Availability requested</button>`
+      : `<button class="btn c-avail" data-gate="avail" data-brand="${id}">${sm(ICON.pin,16)} Check availability</button>`}
+    <div class="sub-actions">
+      <button data-compare="${id}">Compare</button>
+      <button data-book>${sm(ICON.cal,13)} ${booked?"View your call":"Book a call"}</button></div>`;
+  if (!$("#drawer").classList.contains("on")) $("#drawerScroll").scrollTop = 0;
+  $("#drawer").classList.add("on"); $("#drawer").setAttribute("aria-hidden","false"); $("#drawerScrim").classList.add("on");
+}
+function closeBrand(){ $("#drawer").classList.remove("on"); $("#drawer").setAttribute("aria-hidden","true"); $("#drawerScrim").classList.remove("on"); }
+
+/* ---------- Comparison (brand-comparison design) ---------- */
+function cell(v){ return v ? `<div class="cmp-big">${v[0]}</div><small>${v[1]}</small>` : MISSING; }
+function renderCompare(){
+  const cols = cmpCols.map(id=>BRANDS[id]);
+  const opts = (ids,id)=>ids.map(o=>`<option value="${o}" ${o===id?"selected":""}>${BRANDS[o].name}${BRANDS[o].sample?" (sample)":""}</option>`).join("");
+  const picker = (id,i)=>`<div class="cmp-pick"><select data-col="${i}" aria-label="Brand in column ${i+1}">
+      <optgroup label="Your top 5">${opts(TOP10.slice(0,5),id)}</optgroup>
+      <optgroup label="Matches 6–10">${unlocked ? opts(TOP10.slice(5),id) : `<option value="__unlock">🔒 Unlock 5 more matches…</option>`}</optgroup></select>${ICON.chev}</div>`;
+  const lockedMoney = `<span class="locked-line" style="justify-content:center">${sm(ICON.lock,13)} <span class="blur">$000K – $000K</span></span>`;
+  const head = cmpCols.map((id,i)=>{ const b=BRANDS[id];
+    return `<div class="cmp-col">${picker(id,i)}
+      <div class="cmp-logo" style="background:${b.grad}">${b.short}</div>
+      <span class="cmp-badge ${b.band.startsWith("Great")?"good":""}">${b.band}</span>
+      <div class="cmp-name">${b.name}</div><div class="cmp-sub">${b.subcat}</div>
+      ${b.sample?`<span class="cmp-sample">Placeholder brand</span>`:""}
+      <div class="cmp-price">${!unlocked ? lockedMoney : b.from?`Investment from ${b.from}`:"Investment: ask a consultant"}</div></div>`; }).join("");
+  const row = (label, fn)=>`<div class="cmp-row"><div class="cmp-row-label">${label}</div><div class="cmp-cols">${cols.map(b=>`<div class="cmp-cell">${fn(b)}</div>`).join("")}</div></div>`;
+  const section = (title, rows)=>`<div class="cmp-section"><h2 class="cmp-section-title">${title}</h2>${rows}</div>`;
+  const ctas = (dark)=>`<button class="btn btn-pill ${dark?"btn-ghost-dark":"btn-ghost"}" data-gate="refineAll">${ICON.spark} Refine my matches</button>
+      <button class="btn btn-primary btn-pill" data-book>${sm(ICON.cal)} ${booked?"View your call":"Book a call"}</button>`;
+  const bookingHere = bookHost==="cmp";
+  $("#cmpView").innerHTML = `<div class="cmp-stage"><div class="cmp-card">
+    <button class="cmp-back" id="cmpBack">${ICON.back} Back to your results</button>
+    <div class="cmp-hero"><div class="eyebrow">Your Intellifran results</div>
+      <h1>Compare your ${unlocked?"top 10 ":""}matches, side by side.</h1>
+      <p>${unlocked ? "How owning each brand compares. Pick any of your top 10 brands in each column." : "How owning each brand compares. Pick any of your top 5 in each column, or unlock 5 more to compare your top 10."}</p>
+      <div class="cmp-hero-btns">${ctas(false)}</div></div>
+    <div class="cmp-cols">${head}</div>
+    ${section("Overview",
+      row("Short summary", b=>`<div class="cmp-ico">${ICON.spark}</div><span>${b.hook}</span>`) +
+      row("Top selling features", b=>`<ul class="cmp-feats">${b.apart.slice(0,3).map(f=>`<li>${ICON.check}<span>${f}</span></li>`).join("")}</ul>`))}
+    ${section("Investment",
+      row("Total investment", b=>`<div class="cmp-ico">${ICON.coin}</div>${!unlocked
+        ? `<div class="cmp-big locked-line" style="justify-content:center"><span class="blur">$000K – $000K</span></div><button class="btn btn-primary btn-sm" data-gate="invest" data-brand="${TOP10.indexOf(b.key)>-1?b.key:""}">${sm(ICON.lock)} Unlock investment</button>`
+        : `${b.range?`<div class="cmp-big">${b.range}</div><small>Range from the brand's disclosure document</small>`:MISSING}<button class="fund-link" data-fund>${sm(ICON.info)} How franchises are funded</button>`}`))}
+    ${section("Running the business",
+      row("Owner role", b=>`<div class="cmp-ico">${ICON.user}</div>${cell(b.role)}`) +
+      row("Sales requirement", b=>`<div class="cmp-ico">${ICON.phone}</div>${cell(b.sales)}`) +
+      row("Business type", b=>`<div class="cmp-ico">${ICON.store}</div>${cell(b.type)}`))}
+    ${section("Footprint", row("Number of units", b=>`<div class="cmp-ico">${ICON.map}</div>${cell(b.units)}`))}
+    ${section("Support", row("Lead generation support", b=>`<div class="cmp-ico">${ICON.msg}</div>${b.leadgen?`<span>${b.leadgen}</span>`:MISSING}`))}
+    <p class="cmp-foot">${ICON.info}<span>Fees, royalties, earnings and territory aren't shown here. They depend on your market and are best walked through with a specialist.</span></p>
+    <div class="cmp-cta ${bookingHere?"booking":""}" id="cmpCta">${bookingHere
+      ? `<div class="contact">${bookFlowHTML()}</div>`
+      : `<div>${booked
+          ? `<h3>Your call is booked</h3><p>${fmtDay(new Date(booked))} at ${fmtTime(new Date(booked))}. Bring this comparison to the call. Your consultant will cover fees, earnings and territory for each brand.</p>`
+          : `<h3>Not sure which one fits?</h3><p>Answer a few more questions to sharpen your matches, or talk it through with a specialist who knows these brands. Free, and no obligation.</p>`}</div>
+        <div class="cmp-cta-btns">${ctas(true)}</div>`}</div>
+  </div></div>`;
+}
+function openCompare(fromId){
+  if (!unlocked) cmpCols = cmpCols.map((c,i)=>ORDER.includes(c)?c:ORDER.find(o=>!cmpCols.includes(o))||ORDER[i]);
+  if (fromId && !cmpCols.includes(fromId)) cmpCols = [fromId, ...cmpCols.filter(c=>c!==fromId)].slice(0,3);
+  closeBrand(); renderCompare(); $("#cmpView").classList.add("on"); $("#cmpView").scrollTop = 0;
+}
+function closeCompare(){ $("#cmpView").classList.remove("on"); if (bookHost==="cmp") bookHost=null; }
+
+/* ---------- Funding explainer (franchise-funding design) ---------- */
+function renderFund(){
+  $("#fundBody").innerHTML = `<h3 id="fundTitle">How franchises are funded</h3>
+    <p class="sub">Most clients use financing to cover a significant portion of their initial franchise investment, potentially <b>up to 80% of the total project cost</b>.</p>
+    <p style="font-size:14px;line-height:1.55;margin-bottom:16px">Many funding options are available, including some you may not have considered. Intellifran works with funding partners and is happy to connect you with them to explore your options.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" data-book>Book a call</button>
+      ${fundState==="sent"
+        ? `<button class="btn btn-ghost" disabled>${sm(ICON.check)} Request sent</button>`
+        : `<button class="btn btn-ghost" id="fundEmail">${fundState==="sending"?"Sending…":"Email a consultant"}</button>`}
+    </div>
+    ${fundState==="sent"?`<div class="avail-row" style="margin-top:12px"><div class="avail-confirmed"><span class="avail-icon">${ICON.check}</span><div class="avail-sub" style="color:var(--heading)">Thanks! A consultant will email you about funding options within one business day.</div></div></div>`:""}`;
+}
+function openFund(){ renderFund(); $("#fundSheet").classList.add("on"); $("#fundScrim").classList.add("on"); }
+function closeFund(){ $("#fundSheet").classList.remove("on"); $("#fundScrim").classList.remove("on"); }
+
+/* ---------- Book a call (book-a-call design, inline) ----------
+   No floating chat widget. The booking flow renders inside the contact
+   panel the visitor is already looking at: the results rail, or the
+   closing block on the compare page. Steps: details → time → confirm. */
+let bookHost = null;          // "rail" | "cmp" | null (not booking)
+let bookStep = "details";     // "details" | "time" | "confirm" | "booked"
+let cwSel = null, bookPick = null;
+function slots(){
+  const out=[], start=new Date(); start.setHours(0,0,0,0);
+  for (let i=1;i<=7;i++){ const d=new Date(start); d.setDate(start.getDate()+i);
+    if (d.getDay()===0||d.getDay()===6) continue;
+    [[9,0],[10,30],[13,0],[14,30],[16,0]].forEach(([h,m])=>{ const t=new Date(d); t.setHours(h,m); out.push(t); }); }
+  return out;
+}
+function weekCard(){
+  const all=slots(); const start=new Date(); start.setHours(0,0,0,0);
+  const days=[]; for (let i=1;i<=7;i++){ const d=new Date(start); d.setDate(start.getDate()+i); days.push(d); }
+  if (!cwSel) cwSel = days.find(d=>all.some(t=>t.toDateString()===d.toDateString()));
+  const daySlots = all.filter(t=>t.toDateString()===cwSel.toDateString());
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.replace(/_/g," ");
+  return `<div class="bk-card"><div class="cw-weeklabel"><small>Next 7 days</small>${days[0].toLocaleDateString("en-US",{month:"short",day:"numeric"})} – ${days[6].toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div>
+    <div class="cw-days">${days.map(d=>{ const has=all.some(t=>t.toDateString()===d.toDateString());
+      return `<button type="button" class="cw-day" data-cw-day="${d.getTime()}" aria-selected="${d.toDateString()===cwSel.toDateString()}" ${has?"":"disabled"}><span class="cw-dow">${d.toLocaleDateString("en-US",{weekday:"short"})}</span><span class="cw-date">${d.getDate()}</span><span class="dot"></span></button>`; }).join("")}</div>
+    <div class="cw-dayname">${fmtDay(cwSel)}</div>
+    <div class="cw-slots">${daySlots.map(t=>`<button type="button" class="cw-slot" data-cw-slot="${t.getTime()}">${fmtTime(t)}</button>`).join("")}</div>
+    <div class="cw-tz">Times shown in ${tz}</div></div>`;
+}
+const whenCard = t=>`<div class="cw-when"><span class="cw-when-icon">${ICON.check}</span><div><b>${fmtDay(new Date(t))} at ${fmtTime(new Date(t))}</b><span>30 minutes · free, no obligation</span></div></div>`;
+function bookFlowHTML(){
+  const n = {details:1,time:2,confirm:3,booked:3}[bookStep];
+  const steps = `<div class="bk-steps" aria-hidden="true">${[1,2,3].map(k=>`<span class="${k<=n?"on":""}"></span>`).join("")}</div>`;
+  const back = `<button type="button" class="bk-back" data-bk="cancel">${ICON.back} Back</button>`;
+  const foot = `<p class="bk-foot">Intellifran consultants are free to you. Brands pay us when they're a fit.</p>`;
+  if (bookStep==="booked") return `<h3>You're booked ✓</h3><p class="sub">A calendar invite is on its way to ${person.email}.</p>
+    <div class="bk-card">${whenCard(booked)}<p style="font-size:12.5px;color:var(--soft)">Your consultant will walk you through fees, earnings and territory for the brands you're considering.</p></div>
+    <div class="bk-actions"><button type="button" class="btn bk-ghost" data-bk="resched">Pick another time</button><button type="button" class="btn btn-primary" data-bk="done">Done</button></div>`;
+  if (bookStep==="details") return `${back}${steps}<h3>Book a free call</h3>
+    <p class="sub">Free 30-minute call with a franchise consultant. Tell us a little about you so they know who they're talking to.</p>
+    <form class="form" data-source="book" novalidate>${formHTML({dark:true, cta:"Continue to pick a time"})}</form>
+    <p class="why-ask" style="color:#AFC0DC;font-size:11.5px;margin-top:8px;text-align:center">This also unlocks your full list. <button type="button" class="fill" data-fillbook style="color:#BFD2FF">Fill sample</button></p>${foot}`;
+  if (bookStep==="time") return `${back}${steps}<h3>Pick a time</h3><p class="sub">${unlocked?`Hi ${person.first}! `:""}Choose a slot for your free 30-minute call.</p>${weekCard()}${foot}`;
+  return `<button type="button" class="bk-back" data-bk="time">${ICON.back} Change time</button>${steps}<h3>Confirm your call</h3><p class="sub">Book a 30-minute call with a franchise consultant?</p>
+    <div class="bk-card">${whenCard(bookPick)}</div>
+    <div class="bk-actions"><button type="button" class="btn bk-ghost" data-bk="time">Pick another time</button><button type="button" class="btn btn-primary" data-bk="confirm">Confirm</button></div>${foot}`;
+}
+function renderBook(){
+  if (bookHost==="cmp") { const st=$("#cmpView").scrollTop; renderCompare(); $("#cmpView").scrollTop=st; }
+  else renderRail();
+}
+function openBook(host){
+  closeFund(); closeBrand();
+  bookHost = host; cwSel = null; bookPick = null;
+  bookStep = booked ? "booked" : unlocked ? "time" : "details";
+  renderBook();
+  const el = host==="cmp" ? $("#cmpCta") : $("#railContact");
+  setTimeout(()=>{ el?.scrollIntoView({behavior:"smooth", block:"center"});
+    if (bookStep==="details") el?.querySelector("input")?.focus({preventScroll:true}); }, 120);
+}
+function closeBook(){ const h=bookHost; bookHost=null; if (h==="cmp") renderBook(); else renderRail(); }
+
+/* ---------- Gate ---------- */
+function openGate(kind, brandId, sectorId){
+  pending = {kind, brandId, sectorId};
+  if (unlocked){ runPending(); return; }
+  const b = BRANDS[brandId] || {}; const sec = SECTORS.find(s=>s.id===sectorId) || SECTORS[0];
+  const g = (GATES[kind]||GATES.general)(b, sec);
+  $("#sheetTitle").textContent = g.t; $("#sheetSub").textContent = g.s;
+  $("#sheetForm").dataset.source = "";
+  $("#sheetForm").innerHTML = formHTML({zipFirst:g.zipFirst, cta: kind==="avail"?"Check availability":"Send me more information"})
+    + `<p class="why-ask">We ask once. After this, everything on this page is open. <button type="button" class="fill" data-fill>Fill sample</button></p>`;
+  $("#sheet").classList.add("on"); $("#sheetScrim").classList.add("on");
+  setTimeout(()=>{ const f=$("#sheetForm input"); f && f.focus({preventScroll:true}); }, 350);
+}
+function closeGate(){ $("#sheet").classList.remove("on"); $("#sheetScrim").classList.remove("on"); }
+function fillSample(form){
+  const v={first:"Jordan",last:"Reyes",email:"jordan@example.com",phone:"(555) 201-4410",zip:"60614"};
+  Object.entries(v).forEach(([k,val])=>{ const i=form.querySelector(`[name=${k}]`); if(i) i.value=val; });
+  const c=form.querySelector("[name=consent]"); if(c) c.checked=true;
+}
+function capture(form){
+  const missing=[...form.querySelectorAll("[required]")].filter(i=>i.type==="checkbox"?!i.checked:!i.value.trim());
+  if (missing.length){ missing[0].focus(); toast("Please fill in all fields (or use “Fill sample”)."); return false; }
+  person = { first:form.querySelector("[name=first]").value.trim(), email:form.querySelector("[name=email]").value.trim(), zip:form.querySelector("[name=zip]").value.trim() };
+  unlocked = true; store.set("t1bc3-unlocked","1"); store.set("t1bc3-person", JSON.stringify(person));
+  refresh();
+  return true;
+}
+function submitForm(form){
+  if (form.dataset.source==="ask"){
+    const q = form.querySelector("[name=q]").value.trim();
+    if (!q){ form.querySelector("[name=q]").focus(); toast("Type a question, or tap one of the suggestions."); return; }
+    if (!unlocked && !capture(form)) return;
+    bs[askBrand].q = q; closeGate(); sendFor(askBrand,"info");
+    return;
+  }
+  if (form.dataset.source==="book"){
+    bookStep = "time";
+    if (!capture(form)) { bookStep = "details"; return; }
+    renderBook();
+    return;
+  }
+  if (!capture(form)) return;
+  closeGate();
+  if (currentBrand && $("#drawer").classList.contains("on")) openBrand(currentBrand);
+  runPending(true);
+}
+function runPending(justUnlocked){
+  const p = pending || {kind:"general"}; pending = null;
+  const b = BRANDS[p.brandId]; const sec = SECTORS.find(s=>s.id===p.sectorId);
+  switch (p.kind){
+    case "avail": sendFor(p.brandId,"avail"); break;
+    case "info":  sendFor(p.brandId,"info"); break;
+    case "compare": if (justUnlocked) toast("Unlocked: matches 6–10 are now in each column's picker."); break;
+    case "hook": if (justUnlocked) toast(`Unlocked: everything on ${b?.name} is showing.`); break;
+    case "finance": openFund(); break;
+    case "refineAll": toast("→ Continues into the T2 questions (existing flow) to refine all your matches."); break;
+    case "more": if (justUnlocked) toast(`Unlocked: all ${sec?.total} ${sec?.name} matches are showing.`); closeBrand(); setTimeout(()=>document.getElementById("sec-"+sec?.id)?.scrollIntoView({behavior:"smooth"}),100); break;
+    case "invest": if (justUnlocked) toast(`Unlocked: ${b?.name} investment details are showing.`); break;
+    case "item19": if (justUnlocked) toast(`Unlocked: open ${b?.name}'s Financial Performance PDF from the card.`); break;
+    default: if (justUnlocked) toast(`Unlocked: your full list of 23 is on its way to ${person.email}.`);
+  }
+}
+
+let toastT;
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),3200); }
+
+function refresh(){
+  renderSectors(); renderRail();
+  const pill=$("#statePill"); pill.textContent = unlocked?"Contact captured":"Anonymous"; pill.classList.toggle("on",unlocked);
+  $("#mobileCta").innerHTML = unlocked
+    ? `<button class="btn btn-primary" data-book>${booked?"✓ View your call":"Book a call"}</button>`
+    : `<button class="btn btn-primary" data-gate="general">Send me more information</button>`;
+  if ($("#cmpView").classList.contains("on")) renderCompare();
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e=>{
+  const t = e.target;
+  if (t.closest("[data-fill]")){ e.preventDefault(); fillSample($("#sheetForm")); return; }
+  if (t.closest("[data-fillbook]")){ e.preventDefault(); fillSample(t.closest(".contact").querySelector("form")); return; }
+  if (t.closest("[data-book]")){ e.preventDefault(); openBook($("#cmpView").classList.contains("on") ? "cmp" : "rail"); return; }
+  const ask = t.closest("[data-ask]"); if (ask){ e.preventDefault(); if (!ask.disabled) openAsk(ask.dataset.ask); return; }
+  const sug = t.closest("[data-suggest]"); if (sug){ const box=$("#sheetForm [name=q]"); box.value=sug.dataset.suggest; box.focus(); return; }
+  if (t.closest("[data-fund]")){ e.preventDefault(); openFund(); return; }
+  if (t.closest("#fundEmail")){ fundState="sending"; renderFund(); setTimeout(()=>{ fundState="sent"; renderFund(); },900); return; }
+  if (t.closest("#cmpBack")){ closeCompare(); return; }
+  const cmp = t.closest("[data-compare]"); if (cmp){ e.preventDefault(); openCompare(cmp.dataset.compare || null); return; }
+  const close = t.closest("[data-close]"); if (close){ close.dataset.close==="sheet"?closeGate():closeFund(); return; }
+  const day = t.closest("[data-cw-day]"); if (day){ cwSel=new Date(+day.dataset.cwDay); renderBook(); return; }
+  const slot = t.closest("[data-cw-slot]"); if (slot){ bookPick=+slot.dataset.cwSlot; bookStep="confirm"; renderBook(); return; }
+  const bk = t.closest("[data-bk]");
+  if (bk){ const a=bk.dataset.bk;
+    if (a==="cancel"||a==="done"){ closeBook(); return; }
+    if (a==="time"||a==="resched"){ bookStep="time"; renderBook(); return; }
+    if (a==="confirm"){ booked=bookPick; store.set("t1bc3-booked", String(booked)); bookStep="booked"; refresh(); renderBook(); return; }
+  }
+  const gate = t.closest("[data-gate]");
+  if (gate){ e.preventDefault(); if (gate.disabled) return; openGate(gate.dataset.gate, gate.dataset.brand || currentBrand, gate.dataset.sector); return; }
+  const tile = t.closest("[data-open]"); if (tile){ openBrand(tile.dataset.open); return; }
+});
+document.addEventListener("change", e=>{
+  const sel = e.target.closest("select[data-col]"); if (!sel) return;
+  const i=+sel.dataset.col, v=sel.value, j=cmpCols.indexOf(v);
+  if (v==="__unlock"){ sel.value=cmpCols[i]; openGate("compare"); return; }
+  if (j>-1 && j!==i) cmpCols[j]=cmpCols[i];
+  cmpCols[i]=v; renderCompare();
+});
+document.addEventListener("submit", e=>{ e.preventDefault(); submitForm(e.target); });
+$("#drawerClose").onclick = closeBrand; $("#drawerScrim").onclick = closeBrand;
+$("#sheetScrim").onclick = closeGate; $("#fundScrim").onclick = closeFund;
+document.addEventListener("keydown", e=>{ if(e.key!=="Escape") return;
+  if ($("#sheet").classList.contains("on")) closeGate();
+  else if ($("#fundSheet").classList.contains("on")) closeFund();
+  else if ($("#drawer").classList.contains("on")) closeBrand();
+  else closeCompare(); });
+
+$("#deviceSeg").onclick = e=>{ const b=e.target.closest("button"); if(!b) return;
+  [...$("#deviceSeg").children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+  $("#stage").classList.toggle("mobile", b.dataset.device==="mobile"); };
+function setConcept(c, push){
+  concept = c;
+  [...$("#conceptSeg").children].forEach(x=>x.setAttribute("aria-pressed", x.dataset.concept===c));
+  if (push){ const u=new URL(location.href); u.searchParams.set("concept",c); history.replaceState(null,"",u); }
+  if ($("#drawer").classList.contains("on")){ const st=$("#drawerScroll").scrollTop; openBrand(currentBrand); $("#drawerScroll").scrollTop=st; }
+}
+$("#conceptSeg").onclick = e=>{ const b=e.target.closest("button"); if(b) setConcept(b.dataset.concept, true); };
+setConcept(concept, false);
+$("#resetBtn").onclick = ()=>{ unlocked=false; booked=null; fundState="idle"; ORDER.forEach(id=>bs[id]={avail:"idle",info:"idle",q:""});
+  ["t1bc3-unlocked","t1bc3-person","t1bc3-booked"].forEach(k=>store.del(k));
+  bookHost=null; closeBrand(); closeGate(); closeFund(); closeCompare(); refresh(); toast("Reset to anonymous visitor."); };
+
+refresh();
+</script>
+</body>
+</html>
