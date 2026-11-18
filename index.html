@@ -59,23 +59,11 @@ a{color:inherit}
 .hero h1{font:800 clamp(26px,4.2cqi,40px)/1.1 var(--ui);margin:8px 0 10px;color:var(--heading);letter-spacing:-.02em}
 .hero h1 .n{color:var(--secondary)}
 .hero p.lede{font-family:var(--serif);font-size:17px;line-height:1.55;max-width:680px}
-.vetted{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 12px;border-radius:999px;background:#E8F7F5;color:#0E6B61;font-size:13px;font-weight:600}
-.vetted svg{width:16px;height:16px;flex:none}
 .recap{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
 .recap span{font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--soft)}
 
 /* ---------- Sector block ---------- */
 .sector{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;margin-bottom:22px;box-shadow:0 6px 20px rgba(11,35,71,.04)}
-.sector-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.sector-title{display:flex;align-items:center;gap:10px}
-.rank{width:30px;height:30px;border-radius:9px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex-shrink:0}
-.sector h2{font-size:21px;font-weight:800;color:var(--heading)}
-.band{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;color:#0c8f7f;background:color-mix(in srgb,var(--accent) 16%,#fff)}
-.band.good{color:#1d55c9;background:color-mix(in srgb,var(--secondary) 14%,#fff)}
-.strip{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 0 16px;font-size:13px;color:var(--soft)}
-.strip span{display:inline-flex;align-items:center;gap:6px}
-.strip span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
-.strip strong{color:var(--text)}
 .brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 @container app (max-width:520px){ .brand-grid{grid-template-columns:1fr} }
 
@@ -113,7 +101,6 @@ a{color:inherit}
 .locked-line .blur{filter:blur(4px);user-select:none}
 .view{font-weight:700;color:var(--secondary);white-space:nowrap;margin-left:auto}
 
-.empty-note{font-family:var(--serif);font-size:14.5px;color:var(--soft);margin-bottom:12px}
 
 /* "+N more" banner: the main ask on the page */
 .more-banner{width:100%;margin-top:16px;display:flex;align-items:center;gap:16px 18px;flex-wrap:wrap;text-align:left;padding:18px 20px;border-radius:var(--r-md);background:linear-gradient(120deg,var(--primary),#163c78);color:#fff;box-shadow:0 14px 34px rgba(11,35,71,.18);position:relative;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
@@ -233,6 +220,7 @@ button.hk-tile:hover{border-color:var(--secondary);transform:translateY(-2px);bo
 .form label.consent{display:flex;gap:8px;font-size:11.5px;line-height:1.4;opacity:.85;align-items:flex-start}
 .form .submit{margin-top:4px;width:100%;padding:13px}
 .secondary-link{display:block;margin-top:12px;text-align:center;font-size:13px;font-weight:600;color:#BFD2FF;text-decoration:underline;text-underline-offset:3px;width:100%}
+.contact .rail-free{margin-top:10px;text-align:center;font-size:12.5px;color:#C9D5EA}
 .contact.done{background:#0E6B61}
 .contact .booked{margin:12px 0;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.12);font-size:13px}
 .contact .booked b{display:block;font-size:14px}
@@ -253,8 +241,9 @@ button.hk-tile:hover{border-color:var(--secondary);transform:translateY(-2px);bo
 .drawer-close svg{width:18px;height:18px}
 .d-hero{aspect-ratio:16/8}
 .d-hero .photo{aspect-ratio:auto;height:100%}
-.d-head{padding:18px 22px 6px}
-.d-head h2{font:700 28px/1.15 var(--serif);color:var(--heading);margin:4px 0 8px}
+.d-name{padding:18px 64px 12px 22px}
+.d-name h2{font:700 28px/1.15 var(--serif);color:var(--heading);margin:4px 0 0}
+.d-head{padding:14px 22px 6px}
 .d-head .hook{font-size:17px}
 .d-sec{padding:16px 22px;border-top:1px solid var(--border)}
 .d-sec h4{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--soft);margin-bottom:10px;display:flex;align-items:center;gap:8px}
@@ -450,14 +439,13 @@ button.hk-tile:hover{border-color:var(--secondary);transform:translateY(-2px);bo
       <main class="page">
         <section class="hero" style="grid-column:1/-1">
           <div class="eyebrow">Your initial matches</div>
-          <h1>We matched you with <span class="n">23 franchise brands</span>.<br>Here are 5 to explore.</h1>
-          <p class="lede">Based on your six answers, these are your strongest fits right now, grouped by the kind of business they are. Tap any brand to see what owning it actually looks like.</p>
-          <div class="vetted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>Every brand in your results is hand-vetted by franchise consultants</div>
+          <h1>We matched you with <span class="n">23 franchise brands</span>.<br>Here are 10 to explore.</h1>
+          <p class="lede">These franchises best match your answers, grouped by business type. Select a brand to explore what ownership could look like for you.</p>
           <div class="recap"><span>Semi-absentee to start</span><span>Leads a team</span><span>$250K–$500K liquid</span><span>Open within 12 months</span><span>People-focused</span></div>
         </section>
 
         <div>
-          <div id="sectors"></div>
+          <div id="matches"></div>
           <div class="cmp-entry">
             <div><div class="cmp-entry-title">Compare your matches side by side<span class="cmp-new">Free</span></div>
             <div class="cmp-entry-sub">Owner role, the kind of work, support and what sets each brand apart.</div></div>
@@ -669,25 +657,18 @@ const ASKS = {
 };
 const COMMON_ASKS = ["What do owners typically earn?","Can I start while keeping my job?","How would I finance this?"];
 
-const SECTORS = [
-  { id:"retail", rank:1, name:"Retail & Brick-and-Mortar", band:"Strong match", total:14,
-    strip:["Often <strong>semi-absentee</strong> once staffed","<strong>Larger teams</strong> (4–8 staff)","Storefront or studio","<strong>14 brands</strong> match you"],
-    free:["alloy","bodybar","iflex","lightbridge"] },
-  { id:"home", rank:2, name:"Home Services", band:"Good match", total:6,
-    strip:["Service vans, <strong>no storefront</strong>","<strong>Lean teams</strong>","Demand holds up in downturns","<strong>6 brands</strong> match you"],
-    free:["mrrooter"] },
-  { id:"biz", rank:3, name:"Business Services", band:"Good match", total:3,
-    strip:["B2B: you sell to other businesses","Often <strong>home-based</strong>","Usually <strong>full-time</strong> to start","<strong>3 brands</strong> match you"],
-    free:[] }
-];
+/* No sector breakdown: one list of the top 10, ordered by business type. */
+const TYPE_ORDER = ["retail","home","biz"];
+const SHOWN = [...TOP10].sort((a,b)=>TYPE_ORDER.indexOf(BRANDS[a].sector)-TYPE_ORDER.indexOf(BRANDS[b].sector));
+const TOTAL = 23, MORE = TOTAL - SHOWN.length;
 
 /* Gate copy per action. "Territory check" is internal language and never shown. */
 const GATES = {
   general:  ()=>({t:"Want the numbers on your matches?", s:"Tell us where to send your full list of 23. We'll unlock how locations perform, what each costs to open, availability in your area and how owners finance it."}),
-  more:     (b,sec)=>({t:`See all ${sec.total} ${sec.name} matches`, s:"Where should we send your full list? We'll also unlock the numbers on every brand."}),
+  more:     ()=>({t:`See all ${TOTAL} of your matches`, s:"Where should we send your full list? We'll also unlock the numbers on every brand."}),
   hook:     b=>({t:`Unlock everything on ${b.name}`, s:`How locations perform, what it takes to open one, availability in your market and how owners finance it. Plus all 23 of your matches.`}),
   invest:   b=>({t:`See what it takes to open a ${b.name}`, s:"Investment range, cash and net-worth requirements, fees and royalty."}),
-  item19:   b=>({t:`See ${b.name}'s Financial Performance`, s:`${b.name} publishes Item 19 of its Franchise Disclosure Document. Unlock it to open the PDF.`}),
+  item19:   b=>({t:`See ${b.name}'s financial performance`, s:b.item19 ? `${b.name} publishes Item 19 of its Franchise Disclosure Document. Unlock it to open the PDF.` : "Explore the financial results each franchise discloses in its FDD, where available."}),
   avail:    b=>({t:`Is ${b.name} available in your market?`, s:"Start with your ZIP. We'll find out if this brand is available where you want to open.", zipFirst:true}),
   finance:  b=>({t:`How do ${b.name} owners finance it?`, s:"Unlock common funding paths for this brand. Our funding partners can walk you through options if you'd like."}),
   compare:  ()=>({t:"Compare your top 10 matches", s:"Unlock matches 6–10 and add them to your side-by-side comparison."}),
@@ -704,7 +685,7 @@ let unlocked = store.get("t1bc3-unlocked")==="1";
 let person = { first:"Jordan", email:"jordan@example.com", zip:"" };
 try { const p = JSON.parse(store.get("t1bc3-person")||"null"); if (p) person = p; } catch(e){}
 let booked = Number(store.get("t1bc3-booked")) || null;
-const bs = {}; ORDER.forEach(id=>bs[id]={avail:"idle",info:"idle",q:""});
+const bs = {}; TOP10.forEach(id=>bs[id]={avail:"idle",info:"idle",q:""});
 let fundState = "idle";
 let currentBrand = null, pending = null;
 let cmpCols = ["alloy","bodybar","mrrooter"];
@@ -741,38 +722,26 @@ const photo = b=>b.img
   : `<div class="photo" style="background:${b.grad}"><span class="wordmark">${b.name}</span></div>`;
 
 /* ---------- T1 results ---------- */
-function renderSectors(){
-  $("#sectors").innerHTML = SECTORS.map(sec=>{
-    const tiles = sec.free.map(id=>{
-      const b = BRANDS[id];
-      const foot = unlocked
-        ? `<span class="locked-line" style="color:var(--primary)">${b.from?`From ${b.from}`:"Investment: ask us"}</span>`
-        : `<span class="locked-line">${sm(ICON.lock,13)} Investment <span class="blur">$000K–$000K</span></span>`;
-      return `<article class="tile"><button class="tile-open" data-open="${id}">${photo(b)}
-        <div class="tile-body"><div class="subcat">${b.subcat}</div><h3>${b.name}</h3><p class="hook">${b.hook}</p>
-          <div class="chips">${b.perks.slice(0,2).map(p=>`<span class="chip">${p}</span>`).join("")}</div>
-          <div class="tile-foot">${foot}<span class="view">View brand →</span></div></div></button></article>`;
-    }).join("");
-    const remaining = sec.total - sec.free.length;
-    let more = "";
-    if (remaining>0){
-      const what = sec.free.length ? `${remaining} more ${sec.name} brands match you` : `${remaining} ${sec.name} brands match you`;
-      more = unlocked
-        ? `<div class="more-banner done"><span class="mb-ico">${ICON.check}</span><div class="mb-copy"><strong>${what}.</strong><span>They're in your full list, on its way to ${person.email}.</span></div></div>`
-        : `<button class="more-banner" data-gate="more" data-sector="${sec.id}">
-             <span class="mb-num">+${remaining}</span>
-             <div class="mb-copy"><strong>${what}.</strong><span>Tell us where to send them and we'll sharpen your list.</span></div>
-             <span class="btn btn-primary mb-btn">See my ${remaining} more ${ICON.arrow}</span></button>`;
-    }
-    const emptyNote = sec.free.length===0 && !unlocked ? `<p class="empty-note">None of your top 5 are in this category, but ${sec.total} brands here still fit your profile.</p>` : "";
-    return `<section class="sector" id="sec-${sec.id}">
-      <div class="sector-head"><div class="sector-title"><span class="rank">${sec.rank}</span><h2>${sec.name}</h2></div><span class="band ${sec.rank>1?"good":""}">${sec.band}</span></div>
-      <div class="strip">${sec.strip.map(s=>`<span>${s}</span>`).join("")}</div>
-      ${emptyNote}
-      ${tiles?`<div class="brand-grid">${tiles}</div>`:""}
-      ${more}
-    </section>`;
+function renderMatches(){
+  const tiles = SHOWN.map(id=>{
+    const b = BRANDS[id];
+    const foot = unlocked
+      ? `<span class="locked-line" style="color:var(--primary)">${b.from?`From ${b.from}`:"Investment: ask us"}</span>`
+      : `<span class="locked-line">${sm(ICON.lock,13)} Investment <span class="blur">$000K–$000K</span></span>`;
+    const chips = b.sample ? `<span class="chip">Placeholder brand</span>` : (b.perks||[]).slice(0,2).map(p=>`<span class="chip">${p}</span>`).join("");
+    return `<article class="tile"><button class="tile-open" data-open="${id}">${photo(b)}
+      <div class="tile-body"><div class="subcat">${b.subcat}</div><h3>${b.name}</h3><p class="hook">${b.hook}</p>
+        <div class="chips">${chips}</div>
+        <div class="tile-foot">${foot}<span class="view">View brand →</span></div></div></button></article>`;
   }).join("");
+  const what = `${MORE} more brands match you`;
+  const more = unlocked
+    ? `<div class="more-banner done"><span class="mb-ico">${ICON.check}</span><div class="mb-copy"><strong>${what}.</strong><span>They're in your full list, on its way to ${person.email}.</span></div></div>`
+    : `<button class="more-banner" data-gate="more">
+         <span class="mb-num">+${MORE}</span>
+         <div class="mb-copy"><strong>${what}.</strong><span>Tell us where to send them and we'll sharpen your list.</span></div>
+         <span class="btn btn-primary mb-btn">See my ${MORE} more ${ICON.arrow}</span></button>`;
+  $("#matches").innerHTML = `<section class="sector" id="matchList"><div class="brand-grid">${tiles}</div>${more}</section>`;
 }
 
 function formHTML(opts={}){
@@ -799,10 +768,11 @@ function renderRail(){
     return;
   }
   el.classList.remove("done");
-  el.innerHTML = `<h3>Want the numbers on your matches?</h3>
-    <p class="sub">You've seen 5 of your 23 matches. Tell us where to send the rest, and we'll unlock:</p>
-    <ul class="unlock-list"><li>${ICON.check}How these locations perform</li><li>${ICON.check}What it costs to open one</li><li>${ICON.check}Whether it's available in your market</li><li>${ICON.check}How owners typically finance it</li><li>${ICON.check}All 23 of your matches</li></ul>
-    <form class="form" novalidate>${formHTML({dark:true})}</form>
+  el.innerHTML = `<h3>Explore your franchise matches in more detail</h3>
+    <p class="sub">You've seen ${SHOWN.length} of your ${TOTAL} matches. Complete the form to unlock your full list and explore:</p>
+    <ul class="unlock-list"><li>${ICON.check}Financial performance disclosed by each franchise, where available</li><li>${ICON.check}Total investment, cash requirements, and franchise fees</li><li>${ICON.check}Availability in your area: request a ZIP code check</li><li>${ICON.check}Potential financing options, including SBA loans</li><li>${ICON.check}All ${TOTAL} of your franchise matches</li></ul>
+    <button class="btn btn-primary" style="width:100%" data-gate="general">Unlock my full match list</button>
+    <p class="rail-free">Free. No obligation.</p>
     <button class="secondary-link" data-book>Prefer to talk? Book a call.</button>`;
 }
 
@@ -830,7 +800,7 @@ function sendFor(id, kind){
                         : `Request sent. We'll let you know if ${BRANDS[id].name} is available in your area.`); }, 900);
 }
 function repaintBrandBits(id){
-  renderSectors();
+  renderMatches();
   if (currentBrand===id && $("#drawer").classList.contains("on")) { const st=$("#drawerScroll").scrollTop; openBrand(id); $("#drawerScroll").scrollTop=st; }
   if ($("#cmpView").classList.contains("on")) { const st=$("#cmpView").scrollTop; renderCompare(); $("#cmpView").scrollTop=st; }
 }
@@ -854,22 +824,24 @@ function hooks(id){
   const b = BRANDS[id], s = bs[id] || {};
   const zip = person.zip ? ` near ${person.zip}` : "";
   const list = [];
-  if (b.item19) list.push({ key:"item19", icon:ICON.chart,
-    q:"Financial Performance", sub:`Item 19 of ${b.name}'s Franchise Disclosure Document (PDF)`,
+  list.push({ key:"item19", icon:ICON.chart,
+    q:"Franchisee financial performance", sub:"Explore the financial results disclosed by the franchise in its FDD, where available.",
     prev:"FDD · Item 19 · PDF",
-    ans:`<a class="hk-link" href="${b.item19}" target="_blank" rel="noopener">${sm(ICON.doc)} Financial Performance (PDF) ${sm(ICON.ext,12)}</a><span class="hk-note">Published by ${b.name} in its FDD, Item 19. Questions? Ask a consultant.</span>` });
+    ans: b.item19
+      ? `<a class="hk-link" href="${b.item19}" target="_blank" rel="noopener">${sm(ICON.doc)} Financial Performance (PDF) ${sm(ICON.ext,12)}</a><span class="hk-note">Published by ${b.name} in its FDD, Item 19. Questions? Ask a consultant.</span>`
+      : `<span class="hk-ans">Not disclosed in ${b.name}'s FDD</span><span class="hk-note">This brand doesn't publish an Item 19. A consultant can walk you through what owners report.</span>` });
   list.push({ key:"invest", icon:ICON.coin,
-    q:`What does it take to open a ${b.name}?`, sub:"Total investment, cash and net worth required, fees",
+    q:"What would I need to invest?", sub:"Explore total investment, cash and net worth requirements, and franchise fees.",
     prev:"$000K – $000K",
     ans:`<span class="hk-ans">${b.range ? `${b.range} total investment` : "Total investment: ask a consultant"}</span><span class="hk-note">Full breakdown in Investment &amp; requirements below.</span>` });
   list.push({ key:"avail", icon:ICON.pin,
-    q:`Is ${b.name} available in my market?`, sub:"We check your ZIP against open territories",
+    q:"Is there an opportunity near me?", sub:"Request an availability check for your ZIP code.",
     prev:"ZIP 00000 · Open",
     ans: s.avail==="sent"
       ? `<span class="hk-sent">${sm(ICON.check)} Requested${zip}</span><span class="hk-note">We'll email you what we find, usually within one business day.</span>`
       : `<button class="hk-link" data-gate="avail" data-brand="${id}">${sm(ICON.pin)} Check availability${zip}</button>` });
   list.push({ key:"finance", icon:ICON.bank,
-    q:`How do ${b.name} owners typically finance it?`, sub:"Common funding paths, including SBA loans",
+    q:"What financing options could I explore?", sub:"Learn about potential funding paths, including SBA loans.",
     prev:"SBA · 401(k) · Lenders",
     ans:`<button class="hk-link" data-fund>${sm(ICON.info)} How franchises are funded</button><span class="hk-note">Many owners finance a large share of the total investment.</span>` });
   return list;
@@ -898,30 +870,33 @@ function hookBox(id){
   }
   return `<div class="hk-a ${unlocked?"open":""}">
     <div class="hk-eyebrow">${unlocked?"Unlocked for you":"Free · one quick form"}</div>
-    <h3 class="hk-title">${unlocked?`${b.name}: the details`:`Want to learn more about ${b.name}?`}</h3>
+    <h3 class="hk-title">${unlocked?`${b.name}: the details`:"Want more detailed information about this brand?"}</h3>
     <div class="rows">${H.map(h=>unlocked
       ? `<div class="hk-row"><span class="hk-ico">${h.icon}</span><div><span class="hk-q">${h.q}</span><div style="margin-top:4px">${h.ans}</div></div></div>`
       : `<button class="hk-row" data-gate="${h.key}" data-brand="${id}"><span class="hk-ico">${h.icon}</span><span><span class="hk-q">${h.q}</span><span class="hk-sub">${h.sub}</span></span><span class="hk-lock">${ICON.lock}</span></button>`).join("")}</div>
-    ${unlocked?"":`<button class="btn btn-primary hk-unlock" data-gate="hook" data-brand="${id}">${sm(ICON.lock)} Unlock all ${n}</button>
-    <p class="hk-foot">Takes 30 seconds. Also unlocks your full list of 23.</p>`}</div>`;
+    ${unlocked?"":`<button class="btn btn-primary hk-unlock" data-gate="hook" data-brand="${id}">${sm(ICON.lock)} Get my franchise details</button>
+    <p class="hk-foot">Access investment and funding information, request an availability check, and unlock your full list of ${TOTAL} franchise matches.</p>`}</div>`;
 }
 
 function openBrand(id){
   currentBrand = id;
   const b = BRANDS[id];
+  const invest = b.invest || [["Total investment", b.range || "Ask a consultant"]];
   $("#drawerScroll").innerHTML = `
+    <div class="d-name"><div class="subcat">${b.subcat}</div><h2>${b.name}</h2></div>
     <div class="d-hero">${photo(b)}</div>
-    <div class="d-head"><div class="subcat">${b.subcat}</div><h2>${b.name}</h2><p class="hook">${b.hook}</p>
-      <div class="chips" style="margin-top:12px">${b.perks.map(p=>`<span class="chip">${p}</span>`).join("")}</div></div>
-    ${b.about?`<div class="d-sec"><h4>About ${b.name}</h4><p class="about">${b.about}</p></div>`:""}
-    <div class="d-sec"><h4>Why it matches you</h4><div class="why">${b.why}</div></div>
-    <div class="d-sec"><h4>At a glance</h4><div class="glance">${b.glance.map(g=>`<div><b>${g[0]}</b><span>${g[1]}</span></div>`).join("")}</div></div>
+    <div class="d-head"><p class="hook">${b.hook}</p>
+      ${b.sample?`<div class="chips" style="margin-top:12px"><span class="chip">Placeholder brand · sample values</span></div>`
+        :`<div class="chips" style="margin-top:12px">${(b.perks||[]).map(p=>`<span class="chip">${p}</span>`).join("")}</div>`}</div>
+    ${b.glance?`<div class="d-sec"><h4>At a glance</h4><div class="glance">${b.glance.map(g=>`<div><b>${g[0]}</b><span>${g[1]}</span></div>`).join("")}</div></div>`:""}
     <div class="hook-wrap">${hookBox(id)}</div>
+    ${b.about?`<div class="d-sec"><h4>About ${b.name}</h4><p class="about">${b.about}</p></div>`:""}
+    ${b.why?`<div class="d-sec"><h4>Why it matches you</h4><div class="why">${b.why}</div></div>`:""}
     ${listSec("A day as an owner", b.day)}
     ${listSec("Who thrives here", b.who)}
     ${listSec("What sets it apart", b.apart)}
     ${listSec("Support you get", b.support)}
-    ${gatedSec("Investment &amp; requirements", `<dl class="kv">${b.invest.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")}</dl><p style="margin-top:12px"><button class="fund-link" data-fund>${sm(ICON.info)} How franchises are funded</button></p>`, "invest", "See what it takes to open one.", id)}
+    ${gatedSec("Investment &amp; requirements", `<dl class="kv">${invest.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")}</dl><p style="margin-top:12px"><button class="fund-link" data-fund>${sm(ICON.info)} How franchises are funded</button></p>`, "invest", "See what it takes to open one.", id)}
     <div style="height:12px"></div>`;
   const s = bs[id];
   $("#drawerActions").innerHTML = `
@@ -1071,11 +1046,11 @@ function openBook(host){
 function closeBook(){ const h=bookHost; bookHost=null; if (h==="cmp") renderBook(); else renderRail(); }
 
 /* ---------- Gate ---------- */
-function openGate(kind, brandId, sectorId){
-  pending = {kind, brandId, sectorId};
+function openGate(kind, brandId){
+  pending = {kind, brandId};
   if (unlocked){ runPending(); return; }
-  const b = BRANDS[brandId] || {}; const sec = SECTORS.find(s=>s.id===sectorId) || SECTORS[0];
-  const g = (GATES[kind]||GATES.general)(b, sec);
+  const b = BRANDS[brandId] || {};
+  const g = (GATES[kind]||GATES.general)(b);
   $("#sheetTitle").textContent = g.t; $("#sheetSub").textContent = g.s;
   $("#sheetForm").dataset.source = "";
   $("#sheetForm").innerHTML = formHTML({zipFirst:g.zipFirst, cta: kind==="avail"?"Check availability":"Send me more information"})
@@ -1118,7 +1093,7 @@ function submitForm(form){
 }
 function runPending(justUnlocked){
   const p = pending || {kind:"general"}; pending = null;
-  const b = BRANDS[p.brandId]; const sec = SECTORS.find(s=>s.id===p.sectorId);
+  const b = BRANDS[p.brandId];
   switch (p.kind){
     case "avail": sendFor(p.brandId,"avail"); break;
     case "info":  sendFor(p.brandId,"info"); break;
@@ -1126,9 +1101,9 @@ function runPending(justUnlocked){
     case "hook": if (justUnlocked) toast(`Unlocked: everything on ${b?.name} is showing.`); break;
     case "finance": openFund(); break;
     case "refineAll": toast("→ Continues into the T2 questions (existing flow) to refine all your matches."); break;
-    case "more": if (justUnlocked) toast(`Unlocked: all ${sec?.total} ${sec?.name} matches are showing.`); closeBrand(); setTimeout(()=>document.getElementById("sec-"+sec?.id)?.scrollIntoView({behavior:"smooth"}),100); break;
+    case "more": if (justUnlocked) toast(`Unlocked: your full list of ${TOTAL} is on its way to ${person.email}.`); closeBrand(); setTimeout(()=>document.getElementById("matchList")?.scrollIntoView({behavior:"smooth"}),100); break;
     case "invest": if (justUnlocked) toast(`Unlocked: ${b?.name} investment details are showing.`); break;
-    case "item19": if (justUnlocked) toast(`Unlocked: open ${b?.name}'s Financial Performance PDF from the card.`); break;
+    case "item19": if (justUnlocked) toast(b?.item19 ? `Unlocked: open ${b.name}'s Financial Performance PDF from the card.` : `Unlocked: everything on ${b?.name} is showing.`); break;
     default: if (justUnlocked) toast(`Unlocked: your full list of 23 is on its way to ${person.email}.`);
   }
 }
@@ -1137,11 +1112,11 @@ let toastT;
 function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),3200); }
 
 function refresh(){
-  renderSectors(); renderRail();
+  renderMatches(); renderRail();
   const pill=$("#statePill"); pill.textContent = unlocked?"Contact captured":"Anonymous"; pill.classList.toggle("on",unlocked);
   $("#mobileCta").innerHTML = unlocked
     ? `<button class="btn btn-primary" data-book>${booked?"✓ View your call":"Book a call"}</button>`
-    : `<button class="btn btn-primary" data-gate="general">Send me more information</button>`;
+    : `<button class="btn btn-primary" data-gate="general">Unlock my full match list</button>`;
   if ($("#cmpView").classList.contains("on")) renderCompare();
 }
 
@@ -1167,7 +1142,7 @@ document.addEventListener("click", e=>{
     if (a==="confirm"){ booked=bookPick; store.set("t1bc3-booked", String(booked)); bookStep="booked"; refresh(); renderBook(); return; }
   }
   const gate = t.closest("[data-gate]");
-  if (gate){ e.preventDefault(); if (gate.disabled) return; openGate(gate.dataset.gate, gate.dataset.brand || currentBrand, gate.dataset.sector); return; }
+  if (gate){ e.preventDefault(); if (gate.disabled) return; openGate(gate.dataset.gate, gate.dataset.brand || currentBrand); return; }
   const tile = t.closest("[data-open]"); if (tile){ openBrand(tile.dataset.open); return; }
 });
 document.addEventListener("change", e=>{
@@ -1197,7 +1172,7 @@ function setConcept(c, push){
 }
 $("#conceptSeg").onclick = e=>{ const b=e.target.closest("button"); if(b) setConcept(b.dataset.concept, true); };
 setConcept(concept, false);
-$("#resetBtn").onclick = ()=>{ unlocked=false; booked=null; fundState="idle"; ORDER.forEach(id=>bs[id]={avail:"idle",info:"idle",q:""});
+$("#resetBtn").onclick = ()=>{ unlocked=false; booked=null; fundState="idle"; TOP10.forEach(id=>bs[id]={avail:"idle",info:"idle",q:""});
   ["t1bc3-unlocked","t1bc3-person","t1bc3-booked"].forEach(k=>store.del(k));
   bookHost=null; closeBrand(); closeGate(); closeFund(); closeCompare(); refresh(); toast("Reset to anonymous visitor."); };
 
